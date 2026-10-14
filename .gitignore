@@ -29,3 +29,6 @@ backup-jornada*.json
 Thumbs.db
 .idea/
 .vscode/
+
+# Configuração local da Vercel
+/.vercel/

@@ -20,10 +20,8 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Verificar sintaxe e arquivos públicos
-        run: npm run check
-      - name: Testar cálculos, backups e cache offline simulado
-        run: npm test
+      - name: Verificar, testar e gerar o deploy
+        run: npm run build
       - name: Verificar scripts Python
         run: python3 -m py_compile scripts/serve.py scripts/package.py
       - name: Montar pacote público

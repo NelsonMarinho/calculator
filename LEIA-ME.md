@@ -48,11 +48,11 @@ A instalação depende das capacidades do navegador, além da versão do Android
 
 A interface adapta celular e notebook, oferece alvos de toque maiores, confirmação explícita de horários, navegação pelo histórico, tratamento do botão Voltar no teclado de horas e foco contido no diálogo. Há estilos alternativos para navegadores sem suporte ao seletor CSS `:has()`.
 
-Os testes automatizados cobrem cálculos, comparação de 48 cenários com a versão original, leitura de backup antigo, validação de dados e comportamento do service worker em ambiente simulado. Sintaxe, referências locais e dimensões dos ícones também foram verificadas.
+Os 28 testes automatizados cobrem cálculos, comparação de 48 cenários com a versão original, leitura de backup antigo, validação de dados e comportamento do service worker em ambiente simulado. Sintaxe, referências locais e dimensões dos ícones também foram verificadas.
 
 Neste ambiente, a abertura de servidores locais e do navegador de testes foi bloqueada pelas permissões de sockets. Por isso, a renderização visual, a instalação real no Android e o cache offline em um navegador real permanecem sem validação. O cache foi testado por simulação, não em aparelhos.
 
-Para executar as verificações (Node.js 18 ou superior):
+Para executar as verificações (Node.js 24):
 
 ```bash
 npm run check
@@ -80,6 +80,8 @@ Verificação no aparelho após publicar:
 - `scripts/`: verificação e prévia local.
 - `tests/`: testes automatizados sem dependências externas.
 
-Ao alterar um arquivo público, altere a versão `VERSION` em `sw.js`, regenere o ZIP e publique todos os arquivos juntos. Configure o servidor para revalidar `sw.js`, preferencialmente com `Cache-Control: no-cache`. O usuário recebe **Atualizar** quando a nova versão termina de baixar. O app salva os registros antes de recarregar e aguarda a confirmação ou o cancelamento de um horário ainda em edição.
+Na Vercel, `npm run build` gera `dist` e uma versão do cache calculada a partir do conteúdo, automaticamente. Para publicar o ZIP manualmente em outra hospedagem, altere `VERSION` em `sw.js`, regenere o ZIP e publique todos os arquivos juntos. Configure o servidor para revalidar `sw.js`, preferencialmente com `Cache-Control: no-cache`. O usuário recebe **Atualizar** quando a nova versão termina de baixar. O app salva os registros antes de recarregar e aguarda a confirmação ou o cancelamento de um horário ainda em edição.
 
 O service worker limita o cache à pasta do app, funciona em subdiretórios e remove somente caches antigos com o prefixo deste projeto.
+
+Para deploy pela integração com GitHub, consulte [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md).
