@@ -3,46 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jornada de Trabalho v7.3</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f9fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1415" media="(prefers-color-scheme: dark)">
+<title>Jornada de Trabalho</title>
 <style>
-:root{--bg:#f2f4f8;--card:#fff;--ink:#141b2d;--mut:#667085;--line:#e4e7ee;--brand:#2f5bea;--onb:#fff;--brandbg:#e9eefe;--track:#e8ebf2;--ok:#0b8a5f;--okbg:#e1f6ee;--warn:#b25e00;--warnbg:#fff0d9;--bad:#c0291c;--badbg:#fde8e6;--info:#2f5bea;--infobg:#e9eefe;--sh:0 1px 2px rgba(16,24,40,.06),0 4px 14px rgba(16,24,40,.05)}
-@media (prefers-color-scheme:dark){:root{--bg:#0c111b;--card:#151c2a;--ink:#eaeef7;--mut:#98a2b8;--line:#263044;--brand:#7d9bff;--onb:#0c111b;--brandbg:#1c2748;--track:#222c42;--ok:#46d1a2;--okbg:#0f3329;--warn:#f2b45f;--warnbg:#3a2b12;--bad:#ff8f84;--badbg:#401c18;--info:#7d9bff;--infobg:#1c2748;--sh:none}}
-[hidden]{display:none!important}
+:root{--bg:#f4f9fa;--card:#ffffff;--nav:#e6eef0;--ink:#171d1e;--mut:#586264;--line:#d3dcde;--brand:#006874;--onb:#ffffff;--brandbg:#cfeff5;--onpc:#001f25;--track:#dbe4e6;--ok:#1b6e3c;--okbg:#c8f0d3;--onok:#00210d;--warn:#8a5100;--warnbg:#ffe2b8;--onwarn:#2b1700;--bad:#ba1a1a;--badbg:#ffdad6;--onbad:#410002;--info:#006874;--infobg:#ddf1f5;--sh:0 1px 2px rgba(23,29,30,.07),0 2px 8px rgba(23,29,30,.05)}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1415;--card:#192021;--nav:#1f2829;--ink:#dee3e5;--mut:#a0abad;--line:#2f3839;--brand:#4fd8eb;--onb:#00363d;--brandbg:#004f58;--onpc:#97f0ff;--track:#2a3334;--ok:#8ada9e;--okbg:#0f3b22;--onok:#c8f0d3;--warn:#f2bc63;--warnbg:#4a3300;--onwarn:#ffe2b8;--bad:#ffb4ab;--badbg:#5f1412;--onbad:#ffdad6;--info:#4fd8eb;--infobg:#17363b;--sh:none}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Roboto,"Google Sans","Segoe UI",system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
 .num{font-variant-numeric:tabular-nums}
-.bar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}
 .bar-in{max-width:620px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
 .date{font-size:.78rem;color:var(--mut)}h1{font-size:1.1rem;margin:0;font-weight:700;line-height:1.2}
-#clock{font-size:1.35rem;font-weight:650;letter-spacing:-.3px}
+#clock{font-size:1.2rem;font-weight:600;letter-spacing:.2px;background:var(--brandbg);color:var(--onpc);padding:6px 14px;border-radius:999px}
 .wrap{max-width:620px;margin:0 auto;padding:16px 16px calc(92px + env(safe-area-inset-bottom,0px))}
 .view[hidden]{display:none}
 h2{font-size:1rem;margin:0 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
 .daynav{display:flex;gap:8px}
-.ib,.chip2{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:var(--sh)}
-.ib{width:44px;font-size:1.4rem;line-height:1}
-.chip2{padding:0 14px;background:var(--brandbg);color:var(--brand);border-color:transparent;font:inherit;font-weight:600}
-.dpick{flex:1;position:relative;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font-weight:600;box-shadow:var(--sh)}
+.ib,.chip2{height:48px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:var(--sh)}
+.ib{width:48px;font-size:1.4rem;line-height:1}
+.chip2{padding:0 16px;background:var(--brandbg);color:var(--onpc);border-color:transparent;font:inherit;font-weight:600}
+.dpick{flex:1;position:relative;height:48px;border-radius:999px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font-weight:600;box-shadow:var(--sh)}
 .dpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
-.pill{width:100%;margin:10px 0 12px;font:inherit;font-weight:500;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.pill{width:100%;margin:10px 0 12px;font:inherit;font-weight:500;padding:13px 14px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 .times{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.times .f{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;box-shadow:var(--sh)}
+.times .f{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px;box-shadow:var(--sh)}
 .times label{display:block;font-size:.8rem;color:var(--mut);margin:0}
 .times input{width:100%;border:0;background:transparent;padding:2px 0;font:inherit;font-size:2rem;font-weight:650;color:var(--ink);text-align:left;letter-spacing:-.5px;cursor:pointer}
 .times input::placeholder{color:var(--line)}
-.times button{position:absolute;right:10px;top:10px;margin:0;padding:4px 10px;border:0;border-radius:999px;background:var(--brandbg);color:var(--brand);font-size:.78rem;font-weight:600;cursor:pointer}
+.times button{position:absolute;right:10px;top:10px;margin:0;padding:4px 10px;border:0;border-radius:999px;background:var(--brandbg);color:var(--onpc);font-size:.78rem;font-weight:600;cursor:pointer}
 .times .f:focus-within{border-color:var(--brand)}.times .f:has(.err){border-color:var(--bad);background:var(--badbg)}
-.times input:disabled{opacity:.5;cursor:not-allowed}
 input:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,tr:focus-visible{outline:3px solid var(--info);outline-offset:2px}
-#status{border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.93rem;font-weight:500;border-left:4px solid}#status:empty{display:none}
-.s-bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}.s-warn{background:var(--warnbg);border-color:var(--warn);color:var(--warn)}.s-ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}.s-info{background:var(--infobg);border-color:var(--info);color:var(--info)}
+#status{border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:.93rem;font-weight:500;border-left:4px solid}#status:empty{display:none}
+.s-bad{background:var(--badbg);border-color:var(--bad);color:var(--onbad)}.s-warn{background:var(--warnbg);border-color:var(--warn);color:var(--onwarn)}.s-ok{background:var(--okbg);border-color:var(--ok);color:var(--onok)}.s-info{background:var(--infobg);border-color:var(--info);color:var(--onpc)}
 .ring{--p:0;--rc:var(--brand);position:relative;width:200px;height:200px;border-radius:50%;margin:2px auto 16px;display:grid;place-items:center;background:conic-gradient(var(--rc) calc(var(--p)*1%),var(--track) 0)}
 .ring>div{width:86%;height:86%;border-radius:50%;background:var(--card);display:grid;place-content:center;text-align:center;line-height:1.15}
 .ring>div{padding:0 12px}.ring b.s{font-size:1.9rem}.ring.blink{animation:bl 1s ease-in-out infinite}.ring.blink.fast{animation-duration:.5s}@keyframes bl{50%{opacity:.3}}
 .ring small{color:var(--mut);font-size:.78rem}.ring b{font-size:2.6rem;font-weight:700;letter-spacing:-1px}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.kpis div{background:var(--bg);border-radius:12px;padding:10px 6px;text-align:center}
+.kpis div{background:var(--bg);border-radius:16px;padding:10px 6px;text-align:center}
 .kpis small{display:block;color:var(--mut);font-size:.72rem}.kpis b{font-size:1.2rem}.kpis .lim b{color:var(--warn)}
 .big{text-align:center;padding:6px 0 2px}.big small{display:block;color:var(--mut);font-size:.8rem}.big b{font-size:2.8rem;line-height:1.2}
 .pos{color:var(--ok)}.neg{color:var(--bad)}.wn{color:var(--warn)}
@@ -55,8 +56,8 @@ dt{color:var(--mut)}dd{margin:0;font-weight:600;text-align:right}
 .adj{margin:0 0 14px;color:var(--mut)}.adj summary{cursor:pointer;font-size:.88rem}
 #just{width:100%;margin-top:8px;font:inherit;font-size:.92rem;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
-.b{font:inherit;font-size:.92rem;font-weight:600;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
-.b:hover{background:var(--bg)}.b.p{background:var(--brand);border-color:var(--brand);color:var(--onb)}.b.p.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.b{font:inherit;font-size:.92rem;font-weight:600;padding:11px 20px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--brand);cursor:pointer}
+.b:hover{background:var(--infobg)}.b.p{background:var(--brand);border-color:var(--brand);color:var(--onb)}.b.p.on{background:var(--ok);border-color:var(--ok);color:#fff}
 button:disabled{opacity:.45;cursor:default}
 .acc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
 .acc small{display:block;color:var(--mut);font-size:.75rem}.acc b{font-size:1.3rem}.acc i{display:block;font-style:normal;font-size:.72rem;color:var(--mut)}
@@ -71,20 +72,20 @@ tr[data-d]{cursor:pointer}tr.sel td{background:var(--infobg)}td small{display:bl
 .hint{font-size:.82rem;color:var(--mut);margin:0 0 10px}#hv{margin:12px 0 0}
 .disc{font-size:.76rem;color:var(--mut);margin:6px 0 0;text-align:center}
 .tf{cursor:pointer;text-align:center;font-weight:600}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabs button{flex:1;max-width:206px;border:0;background:none;color:var(--mut);padding:9px 4px 8px;font:inherit;font-size:.74rem;font-weight:600;cursor:pointer;display:grid;justify-items:center;gap:2px}
-.tabs svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tabs button.on{color:var(--brand)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--nav);display:flex;justify-content:center;padding:6px 0 env(safe-area-inset-bottom,0px)}
+.tabs button{flex:1;max-width:206px;border:0;background:none;color:var(--mut);padding:4px 4px 6px;font:inherit;font-size:.75rem;font-weight:600;cursor:pointer;display:grid;justify-items:center;gap:4px}
+.tabs svg{width:64px;height:32px;padding:4px 20px;box-sizing:border-box;border-radius:16px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:background .2s}
+.tabs button.on{color:var(--ink)}.tabs button.on svg{background:var(--brandbg);color:var(--onpc)}
 .sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .back{position:absolute;inset:0;background:rgba(10,15,25,.5)}
-.pan{position:relative;width:100%;max-width:420px;background:var(--card);border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 30px rgba(0,0,0,.25);animation:up .2s ease-out}
+.pan{position:relative;width:100%;max-width:420px;background:var(--card);border-radius:28px 28px 0 0;padding:20px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 30px rgba(0,0,0,.25);animation:up .2s ease-out}
 @keyframes up{from{transform:translateY(30px);opacity:0}}
 .shh{display:flex;justify-content:space-between;align-items:center;font-weight:600}
 .chip{border:1px solid var(--line);background:var(--bg);color:var(--brand);border-radius:999px;padding:6px 14px;font:inherit;font-size:.88rem;cursor:pointer}
 .disp{font-size:3.2rem;font-weight:650;text-align:center;margin:8px 0 12px;letter-spacing:2px}.disp.shake{animation:sh .25s}
 @keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.keys button{height:58px;font:inherit;font-size:1.5rem;border-radius:12px;border:0;background:var(--bg);color:var(--ink);cursor:pointer;touch-action:manipulation}
+.keys button{height:58px;font:inherit;font-size:1.5rem;border-radius:20px;border:0;background:var(--bg);color:var(--ink);cursor:pointer;touch-action:manipulation}
 .keys button:active{background:var(--line)}.keys .sm{font-size:1rem;color:var(--mut)}
 .shf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.shf .b{padding:13px;font-size:1rem}
 .toasts{position:fixed;right:14px;bottom:calc(76px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;max-width:330px;z-index:30}
@@ -95,7 +96,7 @@ tr[data-d]{cursor:pointer}tr.sel td{background:var(--infobg)}td small{display:bl
 </style>
 </head>
 <body>
-<header class="bar"><div class="bar-in"><div><div class="date" id="hdate"></div><h1>Jornada de Trabalho <small style="font-size:.7rem;color:var(--mut)">v7.3</small></h1></div><div id="clock" class="num">--:--:--</div></div></header>
+<header class="bar"><div class="bar-in"><div><div class="date" id="hdate"></div><h1>Jornada de Trabalho</h1></div><div id="clock" class="num">--:--:--</div></div></header>
 <main class="wrap">
 <section class="view" id="v-hoje">
   <div class="daynav">
@@ -105,10 +106,6 @@ tr[data-d]{cursor:pointer}tr.sel td{background:var(--infobg)}td small{display:bl
     <button class="chip2" id="hj" type="button">Hoje</button>
   </div>
   <select id="tipo" class="pill" aria-label="Tipo de dia"><option value="trab">Dia de trabalho</option><option value="fer">Feriado / folga trabalhada</option><option value="comp">Folga compensada pelo banco</option><option value="atm">Atestado / abonado</option></select>
-  <label for="modo" class="hint" style="display:block;margin:0">Formato da jornada</label>
-  <select id="modo" class="pill"><option value="intervalo">Com intervalo — 4 batidas</option><option value="continua">Contínua, sem intervalo — 2 batidas (máx. 6h)</option></select>
-  <p class="hint" id="modoHint"></p>
-  <section class="card" id="restCard"></section>
   <div class="times" id="times"><div class="f"><label for="ent">Entrada</label><input id="ent" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="ent">Agora</button></div><div class="f"><label for="sal">Saída almoço</label><input id="sal" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="sal">Agora</button></div><div class="f"><label for="vol">Volta almoço</label><input id="vol" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="vol">Agora</button></div><div class="f"><label for="fin">Saída final</label><input id="fin" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="fin">Agora</button></div></div>
   <div id="status" role="status" aria-live="polite"></div>
   <section class="card" id="out" aria-live="polite"></section>
@@ -197,18 +194,36 @@ const num=(id,d)=>{const v=parseFloat($(id).value);return isNaN(v)?d:v};
 const parseBR=t=>{t=String(t||'').replace(/[^\d.,]/g,'');if(!t)return 0;if(t.includes(','))t=t.replace(/\./g,'').replace(',','.');else if(!/^\d+\.\d{1,2}$/.test(t))t=t.replace(/\./g,'');const v=parseFloat(t);return isNaN(v)?0:v};
 const brl=v=>DB.cfg.hide?'R$ ••••':new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
 const hourly=()=>DB.cfg.sal/(DB.cfg.div||220);
-const fmtS=(m,c)=>{const t=Math[c?'ceil':'floor'](Math.abs(m)*60-1e-6);return (m<0?'-':'')+pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60)};
+const fmtS=(m,c)=>{const t=Math[c?'ceil':'floor'](Math.abs(m)*60+(c?-1e-6:1e-6));return (m<0?'-':'')+pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60)};
 const TIPOS={trab:'Trabalho',fer:'Feriado / folga',comp:'Folga compensada',atm:'Atestado'};
 const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const F=['ent','sal','vol','fin'];
 const DEF={wk:[0,440,440,440,440,440,0],B:119,A:10,tol:1,prz:6,ini:0,a1:110,a2:115,sal:0,div:220,p50:50,p100:100,pn:20,hide:0};
-let DB={cfg:{...DEF},days:{},fired:{}},cur=ymd(new Date()),last=null,notifyOn=false;
+let DB={cfg:{...DEF,wk:[...DEF.wk]},days:{},fired:{}},cur=ymd(new Date()),last=null,notifyOn=false;
 
-function load(){try{const d=JSON.parse(localStorage.getItem('jornada4')||'null');if(d){DB.cfg={...DEF,...d.cfg};DB.days=d.days||{};DB.fired=d.fired||{}}}catch(e){}}
-function save(){try{localStorage.setItem('jornada4',JSON.stringify(DB))}catch(e){}}
-function fillForm(){const d=DB.days[cur]||{};F.forEach(i=>$(i).value=d[i]||'');$('tipo').value=d.tipo||'trab';$('modo').value=d.modo||'intervalo';syncMode();$('just').value=d.just||'';$('dt').value=cur;$('just').closest('details').open=!!d.just;$('dlabel').textContent=(cur===ymd(new Date())?'Hoje · ':'')+pd(cur).toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'})}
-function syncMode(){const continuous=$('modo').value==='continua';['sal','vol'].forEach(k=>$(k).closest('.f').hidden=continuous);$('modoHint').textContent=continuous?'Registre entrada e saída real. Máximo consecutivo: 6h. O saldo segue a jornada configurada em Ajustes.':'Registre as quatro batidas. Cada período de trabalho deve respeitar o limite consecutivo de 6h.';}
-function readForm(){const d={};if($('modo').value==='continua')d.modo='continua';F.forEach(i=>{if($(i).value)d[i]=$(i).value});if($('tipo').value!=='trab')d.tipo=$('tipo').value;if($('just').value.trim())d.just=$('just').value.trim();if(Object.keys(d).length)DB.days[cur]=d;else delete DB.days[cur];delete DB.fired[cur]}
+function load(){try{const d=JSON.parse(localStorage.getItem('jornada4')||'null');if(d){DB=validateBackup(d);if(d.fired&&typeof d.fired==='object'&&!Array.isArray(d.fired))DB.fired=d.fired}}catch(e){toast('Não foi possível ler os registros salvos. Restaure um backup válido.','bad')}}
+function save(){try{localStorage.setItem('jornada4',JSON.stringify(DB));return true}catch(e){toast('Não foi possível salvar. Exporte um backup antes de fechar o app.','bad');return false}}
+
+/* Validate imported data before replacing the current records. */
+function validateBackup(data){
+  const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  if(!object(data)||!object(data.cfg)||!object(data.days))throw new Error('Backup inválido');
+  const cfg={...DEF,wk:[...DEF.wk]};
+  if(data.cfg.wk!==undefined){if(!Array.isArray(data.cfg.wk)||data.cfg.wk.length!==7||data.cfg.wk.some(n=>!Number.isInteger(n)||n<0||n>1439))throw new Error('Jornada inválida');cfg.wk=[...data.cfg.wk];}
+  Object.keys(DEF).filter(k=>k!=='wk').forEach(k=>{if(data.cfg[k]!==undefined){const n=data.cfg[k];if(typeof n!=='number'||!Number.isFinite(n)||k!=='ini'&&n<0||k==='div'&&n===0)throw new Error('Configuração inválida');cfg[k]=n;}});
+  const days=Object.create(null);
+  Object.keys(data.days).forEach(date=>{
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||ymd(pd(date))!==date||!object(data.days[date]))throw new Error('Registro inválido');
+    const day=data.days[date];F.forEach(k=>{if(day[k]!==undefined&&day[k]!==''&&(typeof day[k]!=='string'||!/^([01]\d|2[0-3]):[0-5]\d$/.test(day[k])))throw new Error('Horário inválido');});
+    if(day.tipo!==undefined&&!Object.prototype.hasOwnProperty.call(TIPOS,day.tipo))throw new Error('Tipo inválido');
+    if(day.just!==undefined&&(typeof day.just!=='string'||day.just.length>120))throw new Error('Justificativa inválida');
+    days[date]={...day};
+  });
+  return{cfg,days,fired:{}};
+}
+
+function fillForm(){const d=DB.days[cur]||{};F.forEach(i=>$(i).value=d[i]||'');$('tipo').value=d.tipo||'trab';$('just').value=d.just||'';$('dt').value=cur;$('just').closest('details').open=!!d.just;$('dlabel').textContent=(cur===ymd(new Date())?'Hoje · ':'')+pd(cur).toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'})}
+function readForm(){const d={};F.forEach(i=>{if($(i).value)d[i]=$(i).value});if($('tipo').value!=='trab')d.tipo=$('tipo').value;if($('just').value.trim())d.just=$('just').value.trim();if(Object.keys(d).length)DB.days[cur]=d;else delete DB.days[cur];delete DB.fired[cur]}
 function fillCfg(){const c=DB.cfg;for(let i=0;i<7;i++)$('wk'+i).value=fmt(c.wk[i]);$('cb').value=fmt(c.B);$('a1').value=fmt(c.a1);$('a2').value=fmt(c.a2);$('ca').value=c.A;$('tol').checked=!!c.tol;$('prz').value=c.prz;$('ini').value=fmt(Math.abs(c.ini));$('iniS').value=c.ini<0?'-':'+';$('salr').value=c.sal?c.sal.toFixed(2).replace('.',','):'';$('dvs').value=c.div;$('p50').value=c.p50;$('p100').value=c.p100;$('pn').value=c.pn;$('hide').checked=!!c.hide}
 function readCfg(){const c=DB.cfg;for(let i=0;i<7;i++)c.wk[i]=toMin($('wk'+i).value)||0;c.B=toMin($('cb').value)||0;c.a1=toMin($('a1').value)||110;c.a2=toMin($('a2').value)||115;c.A=Math.min(60,Math.max(1,+$('ca').value||10));c.tol=$('tol').checked?1:0;c.prz=+$('prz').value;const m=toMin($('ini').value)||0;c.ini=$('iniS').value==='-'?-m:m;c.sal=parseBR($('salr').value);c.div=num('dvs',220)||220;c.p50=num('p50',50);c.p100=num('p100',100);c.pn=num('pn',20);c.hide=$('hide').checked?1:0}
 
@@ -220,100 +235,19 @@ function calcDay(date){
   if(tipo==='comp'){r.saldo=-Jw;r.worked=0;return r}
   if(tipo==='atm'){r.saldo=0;r.worked=0;return r}
   let prev=-1;const a={};
-  F.forEach(k=>{if(d.modo==='continua'&&(k==='sal'||k==='vol'))return;let x=toMin(d[k]);if(x===null)return;while(x<=prev){x+=1440;r.cross=true}a[k]=x;prev=x});
+  F.forEach(k=>{let x=toMin(d[k]);if(x===null)return;while(x<=prev){x+=1440;r.cross=true}a[k]=x;prev=x});
   r.e=a.ent;r.s=a.sal;r.v=a.vol;r.f=a.fin;
   const vs=Object.values(a);
   if(vs.length&&Math.max(...vs)-Math.min(...vs)>=1200){r.err='As marcações somam mais de 20 horas entre a primeira e a última. Confira os horários.';return r}
   if(r.e!=null&&r.s!=null)r.night+=nm(r.e,r.s);
   if(r.v!=null&&r.f!=null)r.night+=nm(r.v,r.f);
-  r.continuous=d.modo==='continua';
-  if(r.continuous&&r.e!=null&&r.f!=null)r.night=nm(r.e,r.f);
-  if(r.continuous?r.e!=null&&r.f!=null:vs.length===4){
-    r.p=r.continuous?r.f-r.e:r.s-r.e;r.sg=r.continuous?0:r.f-r.v;r.worked=r.p+r.sg;let sd=r.worked-J;
+  if(vs.length===4){
+    r.p=r.s-r.e;r.sg=r.f-r.v;r.worked=r.p+r.sg;let sd=r.worked-J;
     if(DB.cfg.tol&&tipo==='trab'&&J>0&&sd&&Math.abs(sd)<=10){sd=0;r.tolOn=1}
     r.saldo=sd;
     if(DB.cfg.sal){const h=hourly(),dom=tipo==='fer'||pd(date).getDay()===0;r.pc=dom?DB.cfg.p100:DB.cfg.p50;r.vE=Math.max(sd,0)/60*h*(1+r.pc/100);r.vN=h*(r.night/420+DB.cfg.pn/100*r.night/52.5)}
   }
   return r;
-}
-
-
-/* ===== Intervalo entre jornadas: última saída real + 11h ===== */
-const REST_MIN=660;
-let restWarning=null;
-function markStamp(date,minutes){const d=pd(date);d.setMinutes(minutes);return d.getTime();}
-function stampLabel(ms){const d=new Date(ms);return br(ymd(d))+' às '+pad(d.getHours())+':'+pad(d.getMinutes());}
-function restInfo(date){
-  const current=calcDay(date);let previous=null;
-  for(const k of Object.keys(DB.days).filter(k=>k<date).sort()){
-    const day=calcDay(k);
-    if(day.err||day.e==null||day.f==null)continue;
-    const end=markStamp(k,day.f);
-    if(!Number.isFinite(end))continue;
-    if(!previous||end>previous.end)previous={date:k,end};
-  }
-  const start=current.e!=null?markStamp(date,current.e):null;
-  const minutes=previous&&start!=null?(start-previous.end)/60000:null;
-  const earliest=previous?previous.end+REST_MIN*60000:null;
-  const nextEarliest=!current.err&&current.e!=null&&current.f!=null?markStamp(date,current.f)+REST_MIN*60000:null;
-  return{previous,minutes,earliest,nextEarliest,missing:minutes!=null?Math.max(REST_MIN-minutes,0):null};
-}
-function drawRest(r,b){
-  const box=$('restCard'),info=restInfo(cur),active=r.tipo!=='comp'&&r.tipo!=='atm';
-  restWarning=null;box.hidden=!active;if(!active)return;
-  let rows='',message='',kind='info';const copy=[];
-  if(info.previous){
-    rows+=`<div><dt>Última saída registrada</dt><dd>${stampLabel(info.previous.end)}</dd></div><div><dt>Entrada permitida a partir de</dt><dd>${stampLabel(info.earliest)}</dd></div>`;
-    copy.push('Última saída: '+stampLabel(info.previous.end),'Entrada permitida a partir de: '+stampLabel(info.earliest));
-    if(info.minutes!=null){
-      rows+=`<div><dt>Descanso entre jornadas</dt><dd class="num ${info.missing?'neg':'pos'}">${fmt(info.minutes)}</dd></div>`;
-      if(info.minutes<0){kind='bad';message='A entrada se sobrepõe à jornada anterior. Confira as datas e marcações reais.';}
-      else if(info.missing){kind='bad';message='Descanso insuficiente: '+fmt(info.minutes)+'. Faltaram '+fmt(info.missing)+' para completar as 11h. Registre os horários reais e avise o gestor.';}
-      else{kind='ok';message='Descanso de '+fmt(info.minutes)+': mínimo de 11h atendido.';}
-      copy.push('Descanso: '+fmt(info.minutes),'Faltam para 11h: '+fmt(info.missing));
-    }else message='Antes de iniciar a jornada, respeite o horário mínimo de entrada acima.';
-  }else message='Sem saída anterior válida registrada: não é possível verificar as 11h de descanso.';
-  if(info.nextEarliest){
-    rows+=`<div><dt>Próxima entrada a partir de</dt><dd class="pos">${stampLabel(info.nextEarliest)}</dd></div>`;
-    copy.push('Próxima entrada a partir de: '+stampLabel(info.nextEarliest));
-  }
-  box.innerHTML='<h2>Descanso entre jornadas · 11h</h2><p id="restGate" role="status" aria-live="polite" style="margin:0 0 10px;font-weight:600"></p>'+(rows?'<dl>'+rows+'</dl>':'')+`<p class="hint ${kind==='bad'?'neg':kind==='ok'?'pos':''}" style="margin:12px 0 0">${esc(message)}</p>`+'<p class="hint" style="margin:8px 0 0">Art. 66 da CLT. Conferência com base nas marcações disponíveis.</p>';
-  if(info.missing){restWarning=message;b.M.push({k:'bad',t:message});}
-  if(last&&last.text&&copy.length)last.text+='\n\nDescanso entre jornadas\n'+copy.join('\n');
-}
-
-
-/* ===== Liberação da primeira batida ===== */
-function entryGate(date=cur,now=Date.now()){
-  const info=restInfo(date),today=date===ymd(new Date(now));
-  const type=(DB.days[date]||{}).tipo||'trab',active=type!=='comp'&&type!=='atm';
-  const remaining=active&&today&&info.earliest!=null?Math.max(info.earliest-now,0):0;
-  return{...info,today,active,remaining,locked:remaining>0};
-}
-function updateEntryGate(){
-  const gate=entryGate(),ent=$('ent');
-  ent.disabled=gate.locked;ent.setAttribute('aria-disabled',String(gate.locked));
-  document.querySelectorAll('[data-now]').forEach(button=>{
-    button.disabled=!gate.today||(button.dataset.now==='ent'&&gate.locked);
-    button.title=!gate.today?'Use o teclado para registrar outra data.':gate.locked&&button.dataset.now==='ent'?'Aguarde completar 11h de descanso.':'';
-  });
-  const box=$('restGate');if(!box||!gate.active)return;
-  let message,kind='info';
-  if(!gate.previous)message='Sem saída anterior registrada: liberação não verificada.';
-  else if(!gate.today)message='Nesta data, a entrada deve ser a partir de '+stampLabel(gate.earliest)+'.';
-  else if(gate.locked){kind='warn';const minutes=Math.ceil(gate.remaining/60000);message='Entrada bloqueada · faltam '+minutes+' min ('+fmt(minutes)+') para completar as 11h. Libera em '+stampLabel(gate.earliest)+'.';}
-  else{kind='ok';message='Descanso de 11h concluído · '+(ent.value?'entrada liberada.':'já pode registrar a entrada.');}
-  if(box.textContent!==message)box.textContent=message;
-  box.className='s-'+kind;box.style.padding='10px 12px';box.style.borderRadius='10px';
-}
-function entryAllowed(value,showMessage=true){
-  if(!value)return true;
-  const gate=entryGate(),stamp=markStamp(cur,toMin(value));
-  if(gate.locked||gate.earliest!=null&&stamp<gate.earliest){
-    if(showMessage)toast('Entrada não registrada. Complete as 11h de descanso: entrada a partir de '+stampLabel(gate.earliest)+'.','warn');
-    return false;
-  }
-  return true;
 }
 
 /* ===== Banco acumulado (compensa os créditos mais antigos primeiro) ===== */
@@ -338,7 +272,7 @@ function drawHv(){
 }
 function drawHist(){
   const ym=cur.slice(0,7),ks=Object.keys(DB.days).sort().filter(k=>k.startsWith(ym)),[y,m]=ym.split('-'),mv=monthVals();
-  $('hc').innerHTML='<h2>Espelho de '+m+'/'+y+'</h2>'+(ks.length?'<table><tr><th>Dia</th><th>Tipo</th><th>Trab.</th><th>Saldo</th></tr>'+ks.map(k=>{const r=calcDay(k);return`<tr data-d="${k}" tabindex="0" class="${k===cur?'sel':''}"><td>${br(k).slice(0,5)} ${DOW[pd(k).getDay()]}</td><td>${TIPOS[r.tipo]}${r.continuous?'<small>Contínua · 2 batidas</small>':''}${restInfo(k).missing?'<small class="neg">Descanso &lt; 11h</small>':''}${r.d.just?'<small>✎ '+esc(r.d.just)+'</small>':''}</td><td class="num">${r.worked==null?'—':fmt(r.worked)}</td><td class="num ${r.saldo<0?'neg':'pos'}">${r.saldo==null?'—':sgn(r.saldo)}</td></tr>`}).join('')+'</table>'+(DB.cfg.sal&&(mv.e||mv.n)?'<p class="live">Estimativa do mês: extras '+brl(mv.e)+' · adicional noturno '+brl(mv.n)+'</p>':''):'<p class="empty">Nenhum dia registrado neste mês.</p>');
+  $('hc').innerHTML='<h2>Espelho de '+m+'/'+y+'</h2>'+(ks.length?'<table><tr><th>Dia</th><th>Tipo</th><th>Trab.</th><th>Saldo</th></tr>'+ks.map(k=>{const r=calcDay(k);return`<tr data-d="${k}" tabindex="0" class="${k===cur?'sel':''}"><td>${br(k).slice(0,5)} ${DOW[pd(k).getDay()]}</td><td>${TIPOS[r.tipo]}${r.d.just?'<small>✎ '+esc(r.d.just)+'</small>':''}</td><td class="num">${r.worked==null?'—':fmt(r.worked)}</td><td class="num ${r.saldo<0?'neg':'pos'}">${r.saldo==null?'—':sgn(r.saldo)}</td></tr>`}).join('')+'</table>'+(DB.cfg.sal&&(mv.e||mv.n)?'<p class="live">Estimativa do mês: extras '+brl(mv.e)+' · adicional noturno '+brl(mv.n)+'</p>':''):'<p class="empty">Nenhum dia registrado neste mês.</p>');
 }
 
 /* ===== Resultado do dia ===== */
@@ -350,14 +284,14 @@ function build(r){
   if(r.tipo==='comp'||r.tipo==='atm'){
     add('info',r.tipo==='comp'?'A jornada do dia é debitada do banco de horas.':'Atestado: o dia não gera débito nem crédito.');
     return{html:`<div class="big"><small>${r.tipo==='comp'?'Folga compensada pelo banco':'Dia abonado'}</small><b class="num ${r.saldo<0?'neg':''}">${r.saldo?sgn(r.saldo):'00:00'}</b></div>`,M}}
-  if(r.continuous)return buildContinuous(r);
   if(r.cross)add('info','Jornada atravessa a meia-noite: horários após 00:00 contam como dia seguinte.');
+  const pv=calcDay(addD(cur,-1));
+  if(r.e!=null&&pv.f!=null){const rest=1440+r.e-pv.f;if(rest<0)add('warn','A entrada é anterior à saída registrada no dia anterior. Confira os horários.');else if(rest<660)add('warn','Descanso de '+fmt(rest)+' desde a saída de ontem. O mínimo entre jornadas é 11:00 (art. 66 CLT).')}
   if(r.e==null||r.s==null||r.v==null){
     const mi=r.J>360?60:r.J>240?15:0;
     if(r.s!=null&&r.v==null&&mi)add('info','Volte do almoço a partir de '+clk(r.s+mi)+(mi===60?' (máximo '+clk(r.s+120)+')':'')+'.');
     return{html:'<p class="empty">Informe entrada, saída e volta do almoço.</p>',M}}
   const p=r.s-r.e,lunch=r.v-r.s,nightRow=r.night?`<div><dt>Noturno (22h às 5h)</dt><dd class="num">${fmt(r.night)} (+${fmt(r.night/7)} hora reduzida)${r.vN!=null?' · '+brl(r.vN):''}</dd></div>`:'';
-  if(p>360||(r.sg!=null&&r.sg>360))add('bad','Limite consecutivo de 6h excedido em um período. Registre os horários reais e avise o gestor.');
   const chk=t=>{const mi=t>360?60:t>240?15:0;if(mi&&lunch<mi)add('warn','Almoço de '+fmt(lunch)+': o mínimo é '+fmt(mi)+' para esta jornada.');if(lunch>120)add('warn','Almoço de '+fmt(lunch)+': acima do máximo de 2 horas sem acordo escrito.')};
   let html,text;
   if(r.f==null){
@@ -380,18 +314,17 @@ function build(r){
   r.text=text;last=last||{};last.text=text;
   return{html,M};
 }
-function setStatus(k,t){if(restWarning){k='bad';t=restWarning;}$('status').className=t?'s-'+k:'';$('status').textContent=t||''}
+function setStatus(k,t){$('status').className=t?'s-'+k:'';$('status').textContent=t||''}
 function calc(){
   const r=calcDay(cur);F.forEach(i=>$(i).classList.remove('err'));
-  const b=build(r);drawRest(r,b);b.M.sort((x,y)=>SEV[x.k]-SEV[y.k]);
+  const b=build(r);b.M.sort((x,y)=>SEV[x.k]-SEV[y.k]);
   $('out').innerHTML=b.html;
   const f=b.M[0];setStatus(f?f.k:'',f?f.t:'');
   $('notes').innerHTML=b.M.slice(1).map(m=>'<li>• '+esc(m.t)+'</li>').join('');
-  drawAcc();drawHist();drawHv();updateEntryGate();live();
+  drawAcc();drawHist();drawHv();live();
 }
 function nowAbs(){const d=new Date();let n=d.getHours()*60+d.getMinutes()+d.getSeconds()/60;if(last&&last.e!=null&&n<last.e)n+=1440;return n}
 function live(){
-  if(last&&last.continuous){liveContinuous();return}
   const el=$('live'),rg=$('ring'),ri=$('ringIn');
   if(!el||!rg||!ri||!last||cur!==ymd(new Date()))return;
   const r=calcDay(cur),n=nowAbs(),C=DB.cfg,B=C.B;
@@ -404,61 +337,22 @@ function live(){
   }
   const banco=-rest,left=B-banco,lvl=banco>=B?3:banco>=C.a2?2:banco>=C.a1?1:0;
   const col=lvl===0?'var(--ok)':lvl===1?'var(--warn)':'var(--bad)';
-  const sub=['limite em '+fmtS(left,1),'atenção · limite em '+fmtS(left,1),'BATA O PONTO · '+fmtS(left,1),'REGISTRE A SAÍDA REAL'][lvl];
-  const msg=['Jornada cumprida. Cada minuto a mais entra no banco de horas.','Banco em '+fmt(banco)+'. Prepare-se para bater o ponto.','Bata o ponto agora: faltam '+fmtS(left,1)+' para o limite do banco.','Limite do banco atingido. Registre a saída real e comunique o gestor.'][lvl];
+  const sub=['limite em '+fmtS(left,1),'atenção · limite em '+fmtS(left,1),'BATA O PONTO · '+fmtS(left,1),'NÃO BATA MAIS O PONTO'][lvl];
+  const msg=['Jornada cumprida. Cada minuto a mais entra no banco de horas.','Banco em '+fmt(banco)+'. Prepare-se para bater o ponto.','Bata o ponto agora: faltam '+fmtS(left,1)+' para o limite do banco.','Limite do banco ultrapassado. Bater o ponto agora gera hora extra, que a empresa não permite.'][lvl];
   rg.className='ring'+(lvl===2?' blink':lvl===3?' blink fast':'');
   rg.style.setProperty('--p',B?Math.min(banco/B*100,100):100);rg.style.setProperty('--rc',col);
   ri.innerHTML=`<small>Banco de horas</small><b class="num s">+${fmtS(banco)}</b><small>${sub}</small>`;
   el.innerHTML=`<p class="live">${msg}</p>`;
   if(lvl===1)setStatus('warn',msg);
   else if(lvl===2)setStatus('bad',msg);
-  else if(lvl===3)setStatus('bad','Limite do banco atingido. Registre a saída real e comunique o gestor.');
-}
-
-
-/* ===== Jornada contínua: duas batidas e limite consecutivo de 6h ===== */
-function buildContinuous(r){
-  const M=[],add=(k,t)=>M.push({k,t});
-  if(r.cross)add('info','Jornada atravessa a meia-noite: a saída conta no dia seguinte.');
-  add('info','O limite de 6h consecutivas não altera a jornada contratada. O saldo é comparado à configuração em Ajustes.');
-  if(r.e==null){if(r.f!=null)add('warn','Informe a entrada para calcular a jornada contínua.');return{html:'<p class="empty">Informe a entrada. A saída final encerra a jornada.</p>',M}}
-  const limit=r.e+360;
-  if(r.f==null){
-    last={continuous:true,e:r.e,maxS:limit,cumprir:r.e+r.J};
-    last.text='Jornada contínua — '+br(cur)+'\nEntrada: '+clk(r.e)+'\nLimite de 6h: '+clk(limit)+'\nJornada configurada: '+fmt(r.J);
-    return{html:`<div class="ring" id="ring"><div id="ringIn"><small>Limite de 6h</small><b class="num">${clk(limit)}</b><small>${limit>=1440?'saída no dia seguinte':'saída até este horário'}</small></div></div><div class="kpis"><div><small>Entrada</small><b class="num">${clk(r.e)}</b></div><div><small>Máx. consecutivo</small><b class="num">06:00</b></div><div><small>Jornada contratada</small><b class="num">${fmt(r.J)}</b></div></div><div id="live"></div>`,M};
-  }
-  const excess=Math.max(r.worked-360,0);
-  add(excess?'bad':'ok',excess?'Excedeu o limite de 6h consecutivas em '+fmt(excess)+'. Registre a saída real e avise o gestor.':'Jornada contínua encerrada dentro do limite de 6h.');
-  if(r.saldo<0)add('warn','Saldo negativo de '+fmt(-r.saldo)+' em relação à jornada configurada.');
-  if(r.tolOn)add('info','Tolerância configurada aplicada ao saldo do dia.');
-  last={text:`Jornada contínua — ${br(cur)}\nEntrada: ${clk(r.e)}\nSaída final: ${clk(r.f)}\nTotal trabalhado: ${fmt(r.worked)}\nLimite consecutivo: 06:00\nExcesso consecutivo: ${fmt(excess)}\nJornada configurada: ${fmt(r.J)}\nSaldo do banco: ${sgn(r.saldo)}`};
-  return{html:`<div class="ring" style="--p:${Math.min(r.worked/360*100,100)};--rc:${excess?'var(--bad)':'var(--ok)'}"><div><small>Total consecutivo</small><b class="num ${excess?'neg':'pos'}">${fmt(r.worked)}</b><small>limite de 06:00</small></div></div><dl><div><dt>Entrada</dt><dd>${clk(r.e)}</dd></div><div><dt>Saída final</dt><dd>${clk(r.f)}${r.cross?' (+1 dia)':''}</dd></div><div><dt>Limite de saída</dt><dd>${clk(limit)}</dd></div><div><dt>Excesso consecutivo</dt><dd class="${excess?'neg':''}">${fmt(excess)}</dd></div><div><dt>Jornada contratada</dt><dd>${fmt(r.J)}</dd></div><div><dt>Saldo do banco</dt><dd class="${r.saldo<0?'neg':'pos'}">${sgn(r.saldo)}</dd></div>${r.night?`<div><dt>Noturno (22h às 5h)</dt><dd>${fmt(r.night)}${r.vN!=null?' · '+brl(r.vN):''}</dd></div>`:''}${r.vE>0?`<div><dt>Extras estimadas se pagas</dt><dd>${brl(r.vE)}</dd></div>`:''}</dl>`,M};
-}
-function liveContinuous(){
-  if(cur!==ymd(new Date()))return;
-  const el=$('live'),rg=$('ring'),ri=$('ringIn');if(!el||!rg||!ri)return;
-  const now=new Date(),n=now.getHours()*60+now.getMinutes()+now.getSeconds()/60,worked=n-last.e;if(worked<0){el.innerHTML='<p class="live">Aguardando o horário de entrada registrado.</p>';return;}
-  const left=360-worked,near=left<=DB.cfg.A;
-  rg.style.setProperty('--p',Math.min(worked/360*100,100));rg.style.setProperty('--rc',left<=0?'var(--bad)':near?'var(--warn)':'var(--brand)');
-  ri.innerHTML=`<small>${left<0?'Limite excedido':'Saída até '+clk(last.maxS)}</small><b class="num s">${fmtS(worked)}</b><small>${left<0?'excesso de '+fmtS(-left):left===0?'6h atingidas': 'faltam '+fmtS(left,1)}</small>`;
-  el.innerHTML=`<p class="live">${left<=0?'Limite de 6h atingido. Registre a saída real e comunique o gestor.':'Tempo consecutivo trabalhado. Saldo atual: '+sgn(worked-calcDay(cur).J)+'.'}</p>`;
-  if(near)setStatus(left<=0?'bad':'warn',left<=0?'Limite de 6h consecutivas atingido. Registre a saída real.':'Prepare-se para sair até '+clk(last.maxS)+': faltam '+fmtS(left,1)+'.');
-}
-function scheduleContinuous(){
-  if(!notifyOn||cur!==ymd(new Date())||$('fin').value)return;
-  const now=new Date(),n=now.getHours()*60+now.getMinutes()+now.getSeconds()/60,fr=DB.fired[cur]=DB.fired[cur]||{};if(n<last.e)return;
-  const events=[['contBefore',last.maxS-DB.cfg.A,'Limite de 6h se aproxima','Prepare-se para sair até '+clk(last.maxS)+'.','warn'],['contLimit',last.maxS,'Limite de 6h atingido','Registre a saída real e comunique o gestor.','bad']];
-  // Ao ativar tarde, emitir somente o aviso mais urgente vigente.
-  for(const [key,t,title,msg,k] of events){if(fr[key]||n<t)continue;fr[key]=1;save();if(key==='contBefore'&&n>=last.maxS)continue;notify(title,msg,k)}
+  else if(lvl===3)setStatus('bad','Limite do banco ultrapassado. Não bata mais o ponto: isso gera hora extra, que a empresa não permite. Fale com o gestor.');
 }
 
 /* ===== Alertas ===== */
 function beep(n){try{const c=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.15;o.start(c.currentTime+i*.35);o.stop(c.currentTime+i*.35+.2)}}catch(e){}}
 function toast(msg,k){const d=document.createElement('div');d.className='s-'+k;d.innerHTML='<span></span><button aria-label="Fechar">×</button>';d.firstChild.textContent=msg;d.lastChild.onclick=()=>d.remove();$('toasts').appendChild(d);setTimeout(()=>d.remove(),k==='bad'?60000:20000)}
-function notify(t,msg,k){toast(msg,k);beep(k==='bad'?5:3);if('Notification' in window&&Notification.permission==='granted'){try{new Notification(t,{body:msg})}catch(e){}}}
+function notify(t,msg,k){toast(msg,k);beep(k==='bad'?5:3);if('Notification' in window&&Notification.permission==='granted'){try{if('serviceWorker' in navigator&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(reg=>reg.showNotification(t,{body:msg,icon:'assets/icons/icon-192.png'})).catch(()=>{});else new Notification(t,{body:msg})}catch(e){}}}
 function schedule(){
-  if(last&&last.continuous){scheduleContinuous();return}
   if(!notifyOn||!last||!last.maxS||$('fin').value||cur!==ymd(new Date()))return;
   const n=nowAbs(),A=DB.cfg.A,fr=DB.fired[cur]=DB.fired[cur]||{};
   if(n<calcDay(cur).v)return;
@@ -467,23 +361,23 @@ function schedule(){
    ['a1',c0,'Jornada cumprida','O banco de horas começou a subir.','ok'],
    ['b1',c0+C.a1,'Banco em '+fmt(C.a1),'Faltam '+fmt(C.B-C.a1)+' para o limite. Prepare-se para bater o ponto.','warn'],
    ['b2',c0+C.a2,'Banco em '+fmt(C.a2)+': bata o ponto!','Faltam '+fmt(C.B-C.a2)+' para o limite do banco ('+clk(last.maxS)+'). Bata o ponto agora.','bad'],
-   ['b3',last.maxS,'Limite ultrapassado','Registre a saída real e comunique o gestor.','bad']
+   ['b3',last.maxS,'Limite ultrapassado','Não bata mais o ponto: gera hora extra, que a empresa não permite.','bad']
   ].forEach(([key,t,ti,msg,k])=>{if(fr[key]||n<t)return;fr[key]=1;save();if(n<t+2)notify(ti,msg,k)});
 }
 
 /* ===== Exportações ===== */
 function dl(n,t,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;document.body.appendChild(a);a.click();a.remove()}
 function ics(){
-  if(!last||!last.maxS){toast('Preencha a entrada e, no modo com intervalo, a saída e volta do almoço. Deixe a saída final em aberto.','warn');return}
+  if(!last||!last.maxS){toast('Preencha entrada, saída e volta do almoço (sem saída final).','warn');return}
   const base=cur.replace(/-/g,''),A=DB.cfg.A;
   const dt=m=>{const d=m>=1440?addD(cur,1).replace(/-/g,''):base,x=m%1440;return d+'T'+pad(Math.floor(x/60))+pad(x%60)+'00'};
   const ev=(id,m,n,tg)=>['BEGIN:VEVENT','UID:'+base+'-'+id+'@jornada','DTSTAMP:'+base+'T000000','DTSTART:'+dt(m),'DTEND:'+dt(m+15),'SUMMARY:'+n,'BEGIN:VALARM','TRIGGER:-PT'+tg+'M','ACTION:DISPLAY','DESCRIPTION:'+n,'END:VALARM','END:VEVENT'];
-  dl('lembretes-jornada.ics','text/calendar',['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jornada//PT-BR',...(last.continuous?[...ev('continua',last.maxS,'Limite de 6h consecutivas: registre a saída real',A)]:[...ev('cumprir',last.cumprir,'Jornada cumprida: o banco começa a subir',A),...ev('b1',last.cumprir+DB.cfg.a1,'Banco em '+fmt(DB.cfg.a1)+': prepare-se para bater o ponto',0),...ev('b2',last.cumprir+DB.cfg.a2,'Banco em '+fmt(DB.cfg.a2)+': bata o ponto agora',0),...ev('limite',last.maxS,'Limite do banco atingido: registre a saída real e avise o gestor',0)]),'END:VCALENDAR'].join('\r\n'));
+  dl('lembretes-jornada.ics','text/calendar',['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jornada//PT-BR',...ev('cumprir',last.cumprir,'Jornada cumprida: o banco começa a subir',A),...ev('b1',last.cumprir+DB.cfg.a1,'Banco em '+fmt(DB.cfg.a1)+': prepare-se para bater o ponto',0),...ev('b2',last.cumprir+DB.cfg.a2,'Banco em '+fmt(DB.cfg.a2)+': bata o ponto agora',0),...ev('limite',last.maxS,'Limite do banco atingido: não bata mais o ponto',0),'END:VCALENDAR'].join('\r\n'));
   toast('Abra o arquivo baixado para adicionar ao calendário.','ok');
 }
 function csv(){
-  const ym=cur.slice(0,7),rows=[['Data','Tipo','Formato','Entrada','Saida almoco','Volta almoco','Saida final','Trabalhado','Jornada','Saldo','Extras R$','Noturno R$','Descanso entre jornadas','Falta para 11h','Proxima entrada minima','Justificativa']];
-  Object.keys(DB.days).sort().filter(k=>k.startsWith(ym)).forEach(k=>{const r=calcDay(k),d=r.d,rest=restInfo(k);rows.push([br(k),TIPOS[r.tipo],r.continuous?'Contínua (2 batidas)':'Com intervalo',d.ent||'',r.continuous?'':d.sal||'',r.continuous?'':d.vol||'',d.fin||'',r.worked==null?'':fmt(r.worked),fmt(r.J),r.saldo==null?'':sgn(r.saldo),r.vE?r.vE.toFixed(2).replace('.',','):'',r.vN?r.vN.toFixed(2).replace('.',','):'',rest.minutes==null?'':fmt(rest.minutes),rest.missing==null?'':fmt(rest.missing),rest.nextEarliest?stampLabel(rest.nextEarliest):'',(d.just||'').replace(/[;\r\n]/g,' ')])});
+  const ym=cur.slice(0,7),rows=[['Data','Tipo','Entrada','Saida almoco','Volta almoco','Saida final','Trabalhado','Jornada','Saldo','Extras R$','Noturno R$','Justificativa']];
+  Object.keys(DB.days).sort().filter(k=>k.startsWith(ym)).forEach(k=>{const r=calcDay(k),d=r.d;rows.push([br(k),TIPOS[r.tipo],d.ent||'',d.sal||'',d.vol||'',d.fin||'',r.worked==null?'':fmt(r.worked),fmt(r.J),r.saldo==null?'':sgn(r.saldo),r.vE?r.vE.toFixed(2).replace('.',','):'',r.vN?r.vN.toFixed(2).replace('.',','):'',(d.just||'').replace(/[;\r\n]/g,' ')])});
   if(rows.length<2){toast('Nenhum dia registrado neste mês.','warn');return}
   dl('espelho-'+ym+'.csv','text/csv;charset=utf-8','\ufeff'+rows.map(x=>x.join(';')).join('\r\n'));
 }
@@ -493,7 +387,7 @@ const FLOW=['ent','sal','vol'];let tgt=null,dg='';
 const sheet=$('sheet'),shD=$('shD'),shOk=$('shOk');
 function drawSheet(){shD.textContent=dg.slice(0,2).padEnd(2,'-')+':'+dg.slice(2,4).padEnd(2,'-');shOk.disabled=!(dg.length===4||dg.length===0)}
 function shake(){shD.classList.remove('shake');void shD.offsetWidth;shD.classList.add('shake')}
-function openSheet(id){if(id==='ent'&&entryGate().locked){entryAllowed('00:00');return;}tgt=id;dg=($(id).value||'').replace(':','');$('shT').textContent=(document.querySelector('label[for="'+id+'"]')||{}).textContent||'Horário';sheet.hidden=false;drawSheet();shOk.focus({preventScroll:true})}
+function openSheet(id){tgt=id;dg=($(id).value||'').replace(':','');$('shT').textContent=(document.querySelector('label[for="'+id+'"]')||{}).textContent||'Horário';sheet.hidden=false;drawSheet();shOk.focus({preventScroll:true})}
 function closeSheet(){sheet.hidden=true;if(tgt)$(tgt).focus({preventScroll:true});tgt=null}
 function press(d){
   if(dg.length>=4)return;
@@ -505,12 +399,10 @@ function press(d){
 }
 function confirmSheet(){
   if(!tgt||!(dg.length===4||dg.length===0))return;
-  const id=tgt,el=$(id),value=dg.length?dg.slice(0,2)+':'+dg.slice(2):'';
-  if(id==='ent'&&!entryAllowed(value)){shake();return;}
-  el.value=value;
+  const id=tgt,el=$(id);el.value=dg.length?dg.slice(0,2)+':'+dg.slice(2):'';
   el.dispatchEvent(new Event('input',{bubbles:true}));sheet.hidden=true;tgt=null;
-  const flow=$('modo').value==='continua'?['ent']:FLOW,i=flow.indexOf(id);
-  if(dg.length&&i>-1&&i<flow.length-1&&!$(flow[i+1]).value)setTimeout(()=>openSheet(flow[i+1]),150);else el.focus({preventScroll:true});
+  const i=FLOW.indexOf(id);
+  if(dg.length&&i>-1&&i<FLOW.length-1&&!$(FLOW[i+1]).value)setTimeout(()=>openSheet(FLOW[i+1]),150);else el.focus({preventScroll:true});
 }
 ['1','2','3','4','5','6','7','8','9','Limpar','0','⌫'].forEach(k=>{
   const b=document.createElement('button');b.type='button';b.textContent=k;if(k==='Limpar'||k==='⌫')b.className='sm';
@@ -534,10 +426,10 @@ $('hdate').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day
 
 /* ===== Eventos ===== */
 function setDay(d){cur=d;fillForm();calc()}
-const onForm=()=>{const stored=(DB.days[cur]||{}).ent||'';if($('ent').value!==stored&&!entryAllowed($('ent').value)){$('ent').value=stored;updateEntryGate();return;}readForm();syncMode();save();calc()},onCfg=()=>{readCfg();save();calc()};
-[...F,'tipo','modo','just'].forEach(i=>{$(i).addEventListener('input',onForm);$(i).addEventListener('change',onForm)});
+const onForm=()=>{readForm();save();calc()},onCfg=()=>{readCfg();save();calc()};
+[...F,'tipo','just'].forEach(i=>{$(i).addEventListener('input',onForm);$(i).addEventListener('change',onForm)});
 [...Array(7).keys()].map(i=>'wk'+i).concat(['cb','ca','a1','a2','tol','prz','ini','iniS','salr','dvs','p50','p100','pn','hide']).forEach(i=>{$(i).addEventListener('input',onCfg);$(i).addEventListener('change',onCfg)});
-document.querySelectorAll('[data-now]').forEach(b=>b.onclick=()=>{if(cur!==ymd(new Date()))return;const d=new Date(),el=$(b.dataset.now),value=pad(d.getHours())+':'+pad(d.getMinutes());if(b.dataset.now==='ent'&&!entryAllowed(value))return;el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}))});
+document.querySelectorAll('[data-now]').forEach(b=>b.onclick=()=>{const d=new Date(),el=$(b.dataset.now);el.value=pad(d.getHours())+':'+pad(d.getMinutes());el.dispatchEvent(new Event('input',{bubbles:true}))});
 $('pv').onclick=()=>setDay(addD(cur,-1));$('nx').onclick=()=>setDay(addD(cur,1));$('hj').onclick=()=>setDay(ymd(new Date()));
 $('dt').addEventListener('change',()=>{if($('dt').value)setDay($('dt').value)});
 $('hc').onclick=e=>{const t=e.target.closest('tr[data-d]');if(t){setDay(t.dataset.d);showTab('hoje')}};
@@ -559,12 +451,12 @@ $('btnBkp').onclick=()=>dl('backup-jornada.json','application/json',JSON.stringi
 $('btnRst').onclick=()=>$('fileRst').click();
 $('fileRst').onchange=e=>{
   const f=e.target.files[0];if(!f)return;const rd=new FileReader();
-  rd.onload=()=>{try{const d=JSON.parse(rd.result);if(!d||typeof d.days!=='object'||typeof d.cfg!=='object')throw 0;DB={cfg:{...DEF,...d.cfg},days:d.days,fired:{}};save();fillCfg();fillForm();calc();toast('Backup restaurado.','ok')}catch(x){toast('Arquivo de backup inválido.','bad')}};
-  rd.readAsText(f);e.target.value='';
+  rd.onload=()=>{try{const d=validateBackup(JSON.parse(rd.result));DB=d;const saved=save();fillCfg();fillForm();calc();if(saved)toast('Backup restaurado.','ok')}catch(x){toast('Arquivo de backup inválido.','bad')}};
+  rd.onerror=()=>toast('Não foi possível ler o arquivo de backup.','bad');rd.readAsText(f);e.target.value='';
 };
 
 load();fillCfg();fillForm();calc();
-setInterval(()=>{const d=new Date();$('clock').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());updateEntryGate();live();schedule()},1000);
+setInterval(()=>{const d=new Date();$('clock').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());live();schedule()},1000);
 </script>
 </body>
 </html>

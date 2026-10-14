@@ -50,6 +50,7 @@ if [[ -n "$remote_refs" ]]; then
   exit 1
 fi
 
+node scripts/prepare.cjs
 node scripts/check.cjs
 node --test tests/*.test.cjs
 python3 -m py_compile scripts/serve.py scripts/package.py
@@ -64,7 +65,7 @@ if ! git remote get-url origin >/dev/null 2>&1; then
 fi
 
 git add -- .gitignore .gitattributes .github README.md LEIA-ME.md DEPLOY_VERCEL.md package.json vercel.json \
-  index.html manifest.webmanifest sw.js assets scripts tests calculador-jornada-v7.3.html
+  index.html manifest.webmanifest sw.js assets scripts tests calculador-jornada-v8.html
 git diff --cached --check
 git commit -m "feat: primeira versão da PWA Minha Jornada"
 git push -u origin main

@@ -1,0 +1,7 @@
+/* Integration only; the app's layout and palette come from the v8 HTML. */
+[hidden]{display:none!important}
+#pwaSettings{margin-top:14px}#pwaHelp{margin-top:12px}
+@media(max-width:559px){.cfg{grid-template-columns:repeat(2,minmax(0,1fr))}.cfg .w4{grid-column:span 2}}
+@media(max-width:359px){.bar-in{gap:8px}#clock{padding:6px 8px;font-size:1rem}.daynav{gap:5px}.dpick{font-size:.8rem}.chip2{padding:0 10px}.card{padding:16px}.acc{gap:6px}.acc b{font-size:1.05rem}.acc>div:last-child b{font-size:.85rem}}
+@media print{#pwaSettings{display:none!important}}
+@media(max-width:420px){.times .f label{padding-right:64px;min-height:44px}.times button{min-width:60px;min-height:44px}}

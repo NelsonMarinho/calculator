@@ -38,6 +38,12 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8080)
+    parser.add_argument('--dist', action='store_true', help='Servir o build de produção em dist')
     args = parser.parse_args()
+    if args.dist:
+        ROOT = ROOT / 'dist'
+    if not (ROOT / 'index.html').is_file():
+        raise SystemExit('Execute npm run build antes de iniciar a prévia.')
+    server = ThreadingHTTPServer(('127.0.0.1', args.port), Handler)
     print(f'Abra http://localhost:{args.port} no notebook. Android precisa do endereço HTTPS publicado.', flush=True)
-    ThreadingHTTPServer(('127.0.0.1', args.port), Handler).serve_forever()
+    server.serve_forever()

@@ -3,27 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#142840">
 <meta name="color-scheme" content="light dark">
-<title>Minha Jornada</title>
-<meta name="description" content="Registre sua jornada, acompanhe o banco de horas e consulte o espelho mensal, mesmo offline.">
+<meta name="theme-color" content="#f4f9fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1415" media="(prefers-color-scheme: dark)">
+<title>Jornada de Trabalho</title>
+<style>
+:root{--bg:#f4f9fa;--card:#ffffff;--nav:#e6eef0;--ink:#171d1e;--mut:#586264;--line:#d3dcde;--brand:#006874;--onb:#ffffff;--brandbg:#cfeff5;--onpc:#001f25;--track:#dbe4e6;--ok:#1b6e3c;--okbg:#c8f0d3;--onok:#00210d;--warn:#8a5100;--warnbg:#ffe2b8;--onwarn:#2b1700;--bad:#ba1a1a;--badbg:#ffdad6;--onbad:#410002;--info:#006874;--infobg:#ddf1f5;--sh:0 1px 2px rgba(23,29,30,.07),0 2px 8px rgba(23,29,30,.05)}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1415;--card:#192021;--nav:#1f2829;--ink:#dee3e5;--mut:#a0abad;--line:#2f3839;--brand:#4fd8eb;--onb:#00363d;--brandbg:#004f58;--onpc:#97f0ff;--track:#2a3334;--ok:#8ada9e;--okbg:#0f3b22;--onok:#c8f0d3;--warn:#f2bc63;--warnbg:#4a3300;--onwarn:#ffe2b8;--bad:#ffb4ab;--badbg:#5f1412;--onbad:#ffdad6;--info:#4fd8eb;--infobg:#17363b;--sh:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Roboto,"Google Sans","Segoe UI",system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+.num{font-variant-numeric:tabular-nums}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}
+.bar-in{max-width:620px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.date{font-size:.78rem;color:var(--mut)}h1{font-size:1.1rem;margin:0;font-weight:700;line-height:1.2}
+#clock{font-size:1.2rem;font-weight:600;letter-spacing:.2px;background:var(--brandbg);color:var(--onpc);padding:6px 14px;border-radius:999px}
+.wrap{max-width:620px;margin:0 auto;padding:16px 16px calc(92px + env(safe-area-inset-bottom,0px))}
+.view[hidden]{display:none}
+h2{font-size:1rem;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
+.daynav{display:flex;gap:8px}
+.ib,.chip2{height:48px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:var(--sh)}
+.ib{width:48px;font-size:1.4rem;line-height:1}
+.chip2{padding:0 16px;background:var(--brandbg);color:var(--onpc);border-color:transparent;font:inherit;font-weight:600}
+.dpick{flex:1;position:relative;height:48px;border-radius:999px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font-weight:600;box-shadow:var(--sh)}
+.dpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.pill{width:100%;margin:10px 0 12px;font:inherit;font-weight:500;padding:13px 14px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.times .f{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px;box-shadow:var(--sh)}
+.times label{display:block;font-size:.8rem;color:var(--mut);margin:0}
+.times input{width:100%;border:0;background:transparent;padding:2px 0;font:inherit;font-size:2rem;font-weight:650;color:var(--ink);text-align:left;letter-spacing:-.5px;cursor:pointer}
+.times input::placeholder{color:var(--line)}
+.times button{position:absolute;right:10px;top:10px;margin:0;padding:4px 10px;border:0;border-radius:999px;background:var(--brandbg);color:var(--onpc);font-size:.78rem;font-weight:600;cursor:pointer}
+.times .f:focus-within{border-color:var(--brand)}.times .f:has(.err){border-color:var(--bad);background:var(--badbg)}
+input:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,tr:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+#status{border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:.93rem;font-weight:500;border-left:4px solid}#status:empty{display:none}
+.s-bad{background:var(--badbg);border-color:var(--bad);color:var(--onbad)}.s-warn{background:var(--warnbg);border-color:var(--warn);color:var(--onwarn)}.s-ok{background:var(--okbg);border-color:var(--ok);color:var(--onok)}.s-info{background:var(--infobg);border-color:var(--info);color:var(--onpc)}
+.ring{--p:0;--rc:var(--brand);position:relative;width:200px;height:200px;border-radius:50%;margin:2px auto 16px;display:grid;place-items:center;background:conic-gradient(var(--rc) calc(var(--p)*1%),var(--track) 0)}
+.ring>div{width:86%;height:86%;border-radius:50%;background:var(--card);display:grid;place-content:center;text-align:center;line-height:1.15}
+.ring>div{padding:0 12px}.ring b.s{font-size:1.9rem}.ring.blink{animation:bl 1s ease-in-out infinite}.ring.blink.fast{animation-duration:.5s}@keyframes bl{50%{opacity:.3}}
+.ring small{color:var(--mut);font-size:.78rem}.ring b{font-size:2.6rem;font-weight:700;letter-spacing:-1px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpis div{background:var(--bg);border-radius:16px;padding:10px 6px;text-align:center}
+.kpis small{display:block;color:var(--mut);font-size:.72rem}.kpis b{font-size:1.2rem}.kpis .lim b{color:var(--warn)}
+.big{text-align:center;padding:6px 0 2px}.big small{display:block;color:var(--mut);font-size:.8rem}.big b{font-size:2.8rem;line-height:1.2}
+.pos{color:var(--ok)}.neg{color:var(--bad)}.wn{color:var(--warn)}
+dl{margin:14px 0 0;border-top:1px solid var(--line)}
+dl div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}dl div:last-child{border:0;padding-bottom:0}
+dt{color:var(--mut)}dd{margin:0;font-weight:600;text-align:right}
+.live{margin:12px 0 0;color:var(--mut);font-size:.9rem;text-align:center}
+.empty{text-align:center;color:var(--mut);padding:18px 0;margin:0}
+#notes{margin:0 0 14px;padding:0 4px;list-style:none;color:var(--mut);font-size:.85rem}#notes:empty{display:none}#notes li{margin-bottom:3px}
+.adj{margin:0 0 14px;color:var(--mut)}.adj summary{cursor:pointer;font-size:.88rem}
+#just{width:100%;margin-top:8px;font:inherit;font-size:.92rem;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.b{font:inherit;font-size:.92rem;font-weight:600;padding:11px 20px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--brand);cursor:pointer}
+.b:hover{background:var(--infobg)}.b.p{background:var(--brand);border-color:var(--brand);color:var(--onb)}.b.p.on{background:var(--ok);border-color:var(--ok);color:#fff}
+button:disabled{opacity:.45;cursor:default}
+.acc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.acc small{display:block;color:var(--mut);font-size:.75rem}.acc b{font-size:1.3rem}.acc i{display:block;font-style:normal;font-size:.72rem;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th{color:var(--mut);font-weight:500;text-align:left;padding:4px 0}td{padding:8px 0;border-top:1px solid var(--line)}
+tr[data-d]{cursor:pointer}tr.sel td{background:var(--infobg)}td small{display:block;color:var(--mut)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f label{display:block;font-size:.78rem;color:var(--mut);margin-bottom:4px}
+.f input,.f select{width:100%;font:inherit;font-size:1rem;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.cfg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.cfg .w2{grid-column:span 2}.cfg .w4{grid-column:span 4}
+.wk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(min-width:560px){.wk{grid-template-columns:repeat(7,1fr)}}
+.hint{font-size:.82rem;color:var(--mut);margin:0 0 10px}#hv{margin:12px 0 0}
+.disc{font-size:.76rem;color:var(--mut);margin:6px 0 0;text-align:center}
+.tf{cursor:pointer;text-align:center;font-weight:600}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--nav);display:flex;justify-content:center;padding:6px 0 env(safe-area-inset-bottom,0px)}
+.tabs button{flex:1;max-width:206px;border:0;background:none;color:var(--mut);padding:4px 4px 6px;font:inherit;font-size:.75rem;font-weight:600;cursor:pointer;display:grid;justify-items:center;gap:4px}
+.tabs svg{width:64px;height:32px;padding:4px 20px;box-sizing:border-box;border-radius:16px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:background .2s}
+.tabs button.on{color:var(--ink)}.tabs button.on svg{background:var(--brandbg);color:var(--onpc)}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
+.back{position:absolute;inset:0;background:rgba(10,15,25,.5)}
+.pan{position:relative;width:100%;max-width:420px;background:var(--card);border-radius:28px 28px 0 0;padding:20px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 30px rgba(0,0,0,.25);animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.shh{display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--brand);border-radius:999px;padding:6px 14px;font:inherit;font-size:.88rem;cursor:pointer}
+.disp{font-size:3.2rem;font-weight:650;text-align:center;margin:8px 0 12px;letter-spacing:2px}.disp.shake{animation:sh .25s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.keys button{height:58px;font:inherit;font-size:1.5rem;border-radius:20px;border:0;background:var(--bg);color:var(--ink);cursor:pointer;touch-action:manipulation}
+.keys button:active{background:var(--line)}.keys .sm{font-size:1rem;color:var(--mut)}
+.shf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.shf .b{padding:13px;font-size:1rem}
+.toasts{position:fixed;right:14px;bottom:calc(76px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;max-width:330px;z-index:30}
+.toasts div{padding:11px 14px;border-radius:12px;border-left:4px solid;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.22);display:flex;gap:10px;justify-content:space-between}
+.toasts button{border:0;background:none;color:inherit;font-size:1.1rem;cursor:pointer;padding:0}
+@media (prefers-reduced-motion:reduce){.pan,.disp.shake,.ring.blink{animation:none}}
+@media print{body *{visibility:hidden}#hc,#hc *{visibility:visible}#hc{position:absolute;left:0;top:0;width:100%;box-shadow:none;border:0}.view[hidden]{display:block!important}.tabs,.bar,.toasts,.sheet{display:none!important}}
+</style>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/pwa.css">
 </head>
 <body>
-<header class="bar"><div class="bar-in"><div class="brand-block"><div class="brand-eyebrow">RH · GESTÃO DE JORNADA</div><div class="date" id="hdate"></div><h1>Minha Jornada</h1></div><div id="clock" class="num">--:--:--</div></div></header>
-<main class="wrap" id="mainContent">
-  <div class="app-status"><span id="saveState" class="save-state">Dados neste aparelho</span><span id="networkState" role="status">Verificando acesso offline…</span></div>
-  <section class="install-banner" id="installBanner" aria-label="Instalar aplicativo">
-    <div><strong>Sua jornada, sempre à mão</strong><p>Instale no celular para abrir pela tela inicial.</p></div><button class="b p" id="installButton" type="button">Instalar</button>
-  </section>
-  <section class="install-help card" id="installHelp" hidden><h2>Como instalar</h2><p id="installInstructions"></p><button class="b" type="button" id="closeInstallHelp">Entendi</button></section>
-  <section class="update-banner" id="updateBanner" hidden><span>Uma nova versão está pronta.</span><button class="b" id="updateButton" type="button">Atualizar</button></section>
-  <noscript><p class="card">Ative o JavaScript no navegador para registrar e calcular sua jornada.</p></noscript>
+<header class="bar"><div class="bar-in"><div><div class="date" id="hdate"></div><h1>Jornada de Trabalho</h1></div><div id="clock" class="num">--:--:--</div></div></header>
+<main class="wrap">
 <section class="view" id="v-hoje">
-  <div class="view-heading"><span class="overline">SEU DIA DE TRABALHO</span><h2>Minha jornada</h2><p>Horários, descanso e banco de horas em um só lugar.</p></div>
   <div class="daynav">
     <button class="ib" id="pv" type="button" aria-label="Dia anterior">‹</button>
     <label class="dpick"><span id="dlabel">Hoje</span><input type="date" id="dt" aria-label="Escolher data"></label>
@@ -31,11 +110,6 @@
     <button class="chip2" id="hj" type="button">Hoje</button>
   </div>
   <select id="tipo" class="pill" aria-label="Tipo de dia"><option value="trab">Dia de trabalho</option><option value="fer">Feriado / folga trabalhada</option><option value="comp">Folga compensada pelo banco</option><option value="atm">Atestado / abonado</option></select>
-  <label for="modo" class="hint" style="display:block;margin:0">Formato da jornada</label>
-  <select id="modo" class="pill"><option value="intervalo">Com intervalo — 4 batidas</option><option value="continua">Contínua, sem intervalo — 2 batidas (máx. 6h)</option></select>
-  <p class="hint" id="modoHint"></p>
-  <button class="b p quick-punch" id="quickPunch" type="button" hidden>Registrar entrada</button><p class="hint" id="punchHint" hidden></p>
-  <section class="card" id="restCard"></section>
   <div class="times" id="times"><div class="f"><label for="ent">Entrada</label><input id="ent" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="ent">Agora</button></div><div class="f"><label for="sal">Saída almoço</label><input id="sal" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="sal">Agora</button></div><div class="f"><label for="vol">Volta almoço</label><input id="vol" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="vol">Agora</button></div><div class="f"><label for="fin">Saída final</label><input id="fin" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="fin">Agora</button></div></div>
   <div id="status" role="status" aria-live="polite"></div>
   <section class="card" id="out" aria-live="polite"></section>
@@ -49,8 +123,6 @@
 </section>
 
 <section class="view" id="v-mes" hidden>
-  <div class="view-heading"><span class="overline">ACOMPANHAMENTO MENSAL</span><h2>Espelho de ponto</h2><p>Consulte seus registros, saldos e relatórios.</p></div>
-  <div class="month-control f"><label for="monthPicker">Mês do espelho</label><input type="month" id="monthPicker"></div>
   <section class="card"><div class="acc" id="acc"></div></section>
   <section class="card" id="hc"></section>
   <section class="card"><h2>Exportar e backup</h2>
@@ -66,7 +138,6 @@
 </section>
 
 <section class="view" id="v-cfg" hidden>
-  <div class="view-heading"><span class="overline">PREFERÊNCIAS DE TRABALHO</span><h2>Configurações</h2><p>Personalize sua jornada, remuneração e alertas.</p></div>
   <section class="card"><h2>Jornada e banco de horas</h2>
     <p class="hint">Jornada diária por dia da semana</p>
     <div class="wk f"><div><label for="wk1">Seg</label><input id="wk1" class="tf" readonly inputmode="none"></div><div><label for="wk2">Ter</label><input id="wk2" class="tf" readonly inputmode="none"></div><div><label for="wk3">Qua</label><input id="wk3" class="tf" readonly inputmode="none"></div><div><label for="wk4">Qui</label><input id="wk4" class="tf" readonly inputmode="none"></div><div><label for="wk5">Sex</label><input id="wk5" class="tf" readonly inputmode="none"></div><div><label for="wk6">Sáb</label><input id="wk6" class="tf" readonly inputmode="none"></div><div><label for="wk0">Dom</label><input id="wk0" class="tf" readonly inputmode="none"></div></div>
@@ -91,7 +162,8 @@
     </div>
     <p class="hint" id="hv"></p>
   </section>
-  <section class="card"><h2>Sobre o aplicativo</h2><p class="hint">Os registros ficam neste aparelho e neste navegador. Use Backup e Restaurar backup em Espelho para transferir seus dados para outro dispositivo.</p><p class="hint">Os alertas dependem do app aberto; para lembrar com a tela bloqueada, exporte os lembretes para seu calendário.</p><button class="b" id="installSettings" type="button">Instalação e uso offline</button></section>
+
+  <section class="card" id="pwaSettings"><h2>Aplicativo</h2><p class="hint" id="pwaStatus" role="status">Preparando acesso offline…</p><p class="hint">Os dados ficam neste aparelho. Use Backup para transferi-los. Alertas com o app fechado dependem dos lembretes exportados para o calendário.</p><div class="actions"><button class="b" id="pwaInstall" type="button">Instalar aplicativo</button><button class="b" id="pwaUpdate" type="button" hidden>Atualizar aplicativo</button></div><p class="hint" id="pwaHelp" hidden></p></section>
 </section>
 <p class="disc">Estimativa para acompanhamento pessoal. Valores em R$ são aproximados. Vale o registro oficial do ponto da empresa, a folha de pagamento e o seu acordo de banco de horas.</p>
 </main>
@@ -112,9 +184,286 @@
   </div>
 </div>
 
-<script src="assets/js/core.js" defer></script>
-<script src="assets/js/storage.js" defer></script>
-<script src="assets/js/app.js" defer></script>
+<script>
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const toMin=v=>{if(!v)return null;const[h,m]=v.split(':').map(Number);return h*60+m};
+const fmt=m=>{const s=m<0?'-':'';m=Math.abs(Math.round(m));return s+pad(Math.floor(m/60))+':'+pad(m%60)};
+const clk=m=>fmt(((m%1440)+1440)%1440);
+const sgn=m=>(m>=0?'+':'-')+fmt(Math.abs(m));
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const addD=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return ymd(d)};
+const br=s=>s.split('-').reverse().join('/');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=(id,d)=>{const v=parseFloat($(id).value);return isNaN(v)?d:v};
+const parseBR=t=>{t=String(t||'').replace(/[^\d.,]/g,'');if(!t)return 0;if(t.includes(','))t=t.replace(/\./g,'').replace(',','.');else if(!/^\d+\.\d{1,2}$/.test(t))t=t.replace(/\./g,'');const v=parseFloat(t);return isNaN(v)?0:v};
+const brl=v=>DB.cfg.hide?'R$ ••••':new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
+const hourly=()=>DB.cfg.sal/(DB.cfg.div||220);
+const fmtS=(m,c)=>{const t=Math[c?'ceil':'floor'](Math.abs(m)*60+(c?-1e-6:1e-6));return (m<0?'-':'')+pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60)};
+const TIPOS={trab:'Trabalho',fer:'Feriado / folga',comp:'Folga compensada',atm:'Atestado'};
+const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const F=['ent','sal','vol','fin'];
+const DEF={wk:[0,440,440,440,440,440,0],B:119,A:10,tol:1,prz:6,ini:0,a1:110,a2:115,sal:0,div:220,p50:50,p100:100,pn:20,hide:0};
+let DB={cfg:{...DEF,wk:[...DEF.wk]},days:{},fired:{}},cur=ymd(new Date()),last=null,notifyOn=false;
+
+function load(){try{const d=JSON.parse(localStorage.getItem('jornada4')||'null');if(d){DB=validateBackup(d);if(d.fired&&typeof d.fired==='object'&&!Array.isArray(d.fired))DB.fired=d.fired}}catch(e){toast('Não foi possível ler os registros salvos. Restaure um backup válido.','bad')}}
+function save(){try{localStorage.setItem('jornada4',JSON.stringify(DB));return true}catch(e){toast('Não foi possível salvar. Exporte um backup antes de fechar o app.','bad');return false}}
+
+/* Validate imported data before replacing the current records. */
+function validateBackup(data){
+  const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+  if(!object(data)||!object(data.cfg)||!object(data.days))throw new Error('Backup inválido');
+  const cfg={...DEF,wk:[...DEF.wk]};
+  if(data.cfg.wk!==undefined){if(!Array.isArray(data.cfg.wk)||data.cfg.wk.length!==7||data.cfg.wk.some(n=>!Number.isInteger(n)||n<0||n>1439))throw new Error('Jornada inválida');cfg.wk=[...data.cfg.wk];}
+  Object.keys(DEF).filter(k=>k!=='wk').forEach(k=>{if(data.cfg[k]!==undefined){const n=data.cfg[k];if(typeof n!=='number'||!Number.isFinite(n)||k!=='ini'&&n<0||k==='div'&&n===0)throw new Error('Configuração inválida');cfg[k]=n;}});
+  const days=Object.create(null);
+  Object.keys(data.days).forEach(date=>{
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||ymd(pd(date))!==date||!object(data.days[date]))throw new Error('Registro inválido');
+    const day=data.days[date];F.forEach(k=>{if(day[k]!==undefined&&day[k]!==''&&(typeof day[k]!=='string'||!/^([01]\d|2[0-3]):[0-5]\d$/.test(day[k])))throw new Error('Horário inválido');});
+    if(day.tipo!==undefined&&!Object.prototype.hasOwnProperty.call(TIPOS,day.tipo))throw new Error('Tipo inválido');
+    if(day.just!==undefined&&(typeof day.just!=='string'||day.just.length>120))throw new Error('Justificativa inválida');
+    days[date]={...day};
+  });
+  return{cfg,days,fired:{}};
+}
+
+function fillForm(){const d=DB.days[cur]||{};F.forEach(i=>$(i).value=d[i]||'');$('tipo').value=d.tipo||'trab';$('just').value=d.just||'';$('dt').value=cur;$('just').closest('details').open=!!d.just;$('dlabel').textContent=(cur===ymd(new Date())?'Hoje · ':'')+pd(cur).toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'})}
+function readForm(){const d={};F.forEach(i=>{if($(i).value)d[i]=$(i).value});if($('tipo').value!=='trab')d.tipo=$('tipo').value;if($('just').value.trim())d.just=$('just').value.trim();if(Object.keys(d).length)DB.days[cur]=d;else delete DB.days[cur];delete DB.fired[cur]}
+function fillCfg(){const c=DB.cfg;for(let i=0;i<7;i++)$('wk'+i).value=fmt(c.wk[i]);$('cb').value=fmt(c.B);$('a1').value=fmt(c.a1);$('a2').value=fmt(c.a2);$('ca').value=c.A;$('tol').checked=!!c.tol;$('prz').value=c.prz;$('ini').value=fmt(Math.abs(c.ini));$('iniS').value=c.ini<0?'-':'+';$('salr').value=c.sal?c.sal.toFixed(2).replace('.',','):'';$('dvs').value=c.div;$('p50').value=c.p50;$('p100').value=c.p100;$('pn').value=c.pn;$('hide').checked=!!c.hide}
+function readCfg(){const c=DB.cfg;for(let i=0;i<7;i++)c.wk[i]=toMin($('wk'+i).value)||0;c.B=toMin($('cb').value)||0;c.a1=toMin($('a1').value)||110;c.a2=toMin($('a2').value)||115;c.A=Math.min(60,Math.max(1,+$('ca').value||10));c.tol=$('tol').checked?1:0;c.prz=+$('prz').value;const m=toMin($('ini').value)||0;c.ini=$('iniS').value==='-'?-m:m;c.sal=parseBR($('salr').value);c.div=num('dvs',220)||220;c.p50=num('p50',50);c.p100=num('p100',100);c.pn=num('pn',20);c.hide=$('hide').checked?1:0}
+
+/* ===== Cálculo de um dia ===== */
+const nm=(x,y)=>{let t=0;for(let k=0;k<3;k++){t+=Math.max(0,Math.min(y,k*1440+300)-Math.max(x,k*1440));t+=Math.max(0,Math.min(y,k*1440+1440)-Math.max(x,k*1440+1320))}return t};
+function calcDay(date){
+  const d=DB.days[date]||{},tipo=d.tipo||'trab',Jw=DB.cfg.wk[pd(date).getDay()];
+  const J=(tipo==='fer'||tipo==='atm')?0:Jw,r={date,d,tipo,J,Jw,saldo:null,worked:null,night:0,cross:false,err:null};
+  if(tipo==='comp'){r.saldo=-Jw;r.worked=0;return r}
+  if(tipo==='atm'){r.saldo=0;r.worked=0;return r}
+  let prev=-1;const a={};
+  F.forEach(k=>{let x=toMin(d[k]);if(x===null)return;while(x<=prev){x+=1440;r.cross=true}a[k]=x;prev=x});
+  r.e=a.ent;r.s=a.sal;r.v=a.vol;r.f=a.fin;
+  const vs=Object.values(a);
+  if(vs.length&&Math.max(...vs)-Math.min(...vs)>=1200){r.err='As marcações somam mais de 20 horas entre a primeira e a última. Confira os horários.';return r}
+  if(r.e!=null&&r.s!=null)r.night+=nm(r.e,r.s);
+  if(r.v!=null&&r.f!=null)r.night+=nm(r.v,r.f);
+  if(vs.length===4){
+    r.p=r.s-r.e;r.sg=r.f-r.v;r.worked=r.p+r.sg;let sd=r.worked-J;
+    if(DB.cfg.tol&&tipo==='trab'&&J>0&&sd&&Math.abs(sd)<=10){sd=0;r.tolOn=1}
+    r.saldo=sd;
+    if(DB.cfg.sal){const h=hourly(),dom=tipo==='fer'||pd(date).getDay()===0;r.pc=dom?DB.cfg.p100:DB.cfg.p50;r.vE=Math.max(sd,0)/60*h*(1+r.pc/100);r.vN=h*(r.night/420+DB.cfg.pn/100*r.night/52.5)}
+  }
+  return r;
+}
+
+/* ===== Banco acumulado (compensa os créditos mais antigos primeiro) ===== */
+function accum(){
+  const ks=Object.keys(DB.days).sort(),lots=[];let tot=0,mes=0;
+  const ap=(date,m)=>{if(m>0)lots.push({date,m});else{let n=-m;while(n>0&&lots.length){const l=lots[0],t=Math.min(l.m,n);l.m-=t;n-=t;if(!l.m)lots.shift()}}};
+  if(DB.cfg.ini){ap(ks[0]||cur,DB.cfg.ini);tot+=DB.cfg.ini}
+  ks.forEach(k=>{const r=calcDay(k);if(r.saldo==null)return;tot+=r.saldo;ap(k,r.saldo);if(k.slice(0,7)===cur.slice(0,7))mes+=r.saldo});
+  return{tot,mes,lots};
+}
+function drawAcc(){
+  const a=accum();let v='—',sub='sem créditos a vencer',cls='';
+  if(a.lots.length){const l=a.lots[0],due=pd(l.date);due.setMonth(due.getMonth()+DB.cfg.prz);
+    const dl=Math.round((due-pd(ymd(new Date())))/864e5);v=br(ymd(due));
+    cls=dl<0?'neg':dl<=30?'wn':'';sub=(dl<0?'vencido há '+(-dl)+' dias':'em '+dl+' dias')+' · '+fmt(l.m)}
+  $('acc').innerHTML=`<div><small>Saldo do mês</small><b class="num ${a.mes<0?'neg':'pos'}">${sgn(a.mes)}</b></div><div><small>Saldo total</small><b class="num ${a.tot<0?'neg':'pos'}">${sgn(a.tot)}</b></div><div><small>Próximo vencimento</small><b class="num ${cls}">${v}</b><i>${sub}</i></div>`;
+}
+function monthVals(){let e=0,n=0;Object.keys(DB.days).filter(k=>k.startsWith(cur.slice(0,7))).forEach(k=>{const r=calcDay(k);e+=r.vE||0;n+=r.vN||0});return{e,n}}
+function drawHv(){
+  const c=DB.cfg,h=hourly();
+  $('hv').textContent=c.sal?'Valor da hora: '+brl(h)+' · extra '+c.p50+'%: '+brl(h*(1+c.p50/100))+' · dom./feriado '+c.p100+'%: '+brl(h*(1+c.p100/100))+' · noturno: +'+c.pn+'% sobre a hora':'Informe o salário para calcular o valor da hora e das horas extras. O divisor 220 corresponde a 44 horas semanais.';
+}
+function drawHist(){
+  const ym=cur.slice(0,7),ks=Object.keys(DB.days).sort().filter(k=>k.startsWith(ym)),[y,m]=ym.split('-'),mv=monthVals();
+  $('hc').innerHTML='<h2>Espelho de '+m+'/'+y+'</h2>'+(ks.length?'<table><tr><th>Dia</th><th>Tipo</th><th>Trab.</th><th>Saldo</th></tr>'+ks.map(k=>{const r=calcDay(k);return`<tr data-d="${k}" tabindex="0" class="${k===cur?'sel':''}"><td>${br(k).slice(0,5)} ${DOW[pd(k).getDay()]}</td><td>${TIPOS[r.tipo]}${r.d.just?'<small>✎ '+esc(r.d.just)+'</small>':''}</td><td class="num">${r.worked==null?'—':fmt(r.worked)}</td><td class="num ${r.saldo<0?'neg':'pos'}">${r.saldo==null?'—':sgn(r.saldo)}</td></tr>`}).join('')+'</table>'+(DB.cfg.sal&&(mv.e||mv.n)?'<p class="live">Estimativa do mês: extras '+brl(mv.e)+' · adicional noturno '+brl(mv.n)+'</p>':''):'<p class="empty">Nenhum dia registrado neste mês.</p>');
+}
+
+/* ===== Resultado do dia ===== */
+const SEV={bad:0,warn:1,info:2,ok:3};
+function build(r){
+  const B=DB.cfg.B,M=[],add=(k,t)=>M.push({k,t});
+  last=null;
+  if(r.err){add('bad',r.err);return{html:'<p class="empty">Corrija os horários.</p>',M}}
+  if(r.tipo==='comp'||r.tipo==='atm'){
+    add('info',r.tipo==='comp'?'A jornada do dia é debitada do banco de horas.':'Atestado: o dia não gera débito nem crédito.');
+    return{html:`<div class="big"><small>${r.tipo==='comp'?'Folga compensada pelo banco':'Dia abonado'}</small><b class="num ${r.saldo<0?'neg':''}">${r.saldo?sgn(r.saldo):'00:00'}</b></div>`,M}}
+  if(r.cross)add('info','Jornada atravessa a meia-noite: horários após 00:00 contam como dia seguinte.');
+  const pv=calcDay(addD(cur,-1));
+  if(r.e!=null&&pv.f!=null){const rest=1440+r.e-pv.f;if(rest<0)add('warn','A entrada é anterior à saída registrada no dia anterior. Confira os horários.');else if(rest<660)add('warn','Descanso de '+fmt(rest)+' desde a saída de ontem. O mínimo entre jornadas é 11:00 (art. 66 CLT).')}
+  if(r.e==null||r.s==null||r.v==null){
+    const mi=r.J>360?60:r.J>240?15:0;
+    if(r.s!=null&&r.v==null&&mi)add('info','Volte do almoço a partir de '+clk(r.s+mi)+(mi===60?' (máximo '+clk(r.s+120)+')':'')+'.');
+    return{html:'<p class="empty">Informe entrada, saída e volta do almoço.</p>',M}}
+  const p=r.s-r.e,lunch=r.v-r.s,nightRow=r.night?`<div><dt>Noturno (22h às 5h)</dt><dd class="num">${fmt(r.night)} (+${fmt(r.night/7)} hora reduzida)${r.vN!=null?' · '+brl(r.vN):''}</dd></div>`:'';
+  const chk=t=>{const mi=t>360?60:t>240?15:0;if(mi&&lunch<mi)add('warn','Almoço de '+fmt(lunch)+': o mínimo é '+fmt(mi)+' para esta jornada.');if(lunch>120)add('warn','Almoço de '+fmt(lunch)+': acima do máximo de 2 horas sem acordo escrito.')};
+  let html,text;
+  if(r.f==null){
+    chk(r.J);
+    const falta=Math.max(r.J-p,0),cumprir=r.v+falta,maxS=r.v+(r.J-p)+B;
+    last={e:r.e,v:r.v,cumprir,maxS};
+    html=`<div class="ring" id="ring" style="--p:${r.J?Math.min(p/r.J*100,100):100}"><div id="ringIn"><small>Sair às</small><b class="num">${clk(cumprir)}</b><small>jornada cumprida</small></div></div><div class="kpis"><div><small>Primeiro turno</small><b class="num">${fmt(p)}</b></div><div><small>Faltam</small><b class="num">${fmt(falta)}</b></div><div class="lim"><small>Limite do banco</small><b class="num">${clk(maxS)}</b></div></div>${nightRow?'<dl>'+nightRow+'</dl>':''}<div id="live"></div>`;
+    text=`Primeiro Turno: ${fmt(p)}\nFaltam para jornada: ${fmt(falta)}\nSaída para cumprir jornada: ${clk(cumprir)}\nSaída máxima permitida: ${clk(maxS)}`;
+  }else{
+    const sg=r.sg,tot=r.worked,saldo=r.saldo,maxS=r.v+(r.J-p)+B;
+    chk(tot);
+    html=`<div class="ring" style="--p:${r.J?Math.min(tot/r.J*100,100):100};--rc:${saldo>B?'var(--bad)':saldo<0?'var(--warn)':'var(--ok)'}"><div><small>Saldo do dia</small><b class="num ${saldo>=0?'pos':'neg'}">${sgn(saldo)}</b><small>${fmt(tot)} de ${fmt(r.J)}</small></div></div><dl><div><dt>Primeiro turno</dt><dd class="num">${fmt(p)}</dd></div><div><dt>Segundo turno</dt><dd class="num">${fmt(sg)}</dd></div><div><dt>Total trabalhado</dt><dd class="num">${fmt(tot)}</dd></div><div><dt>Almoço</dt><dd class="num">${fmt(lunch)}</dd></div><div><dt>Jornada contratada</dt><dd class="num">${fmt(r.J)}</dd></div><div><dt>Horas extras</dt><dd class="num">${fmt(Math.max(saldo,0))}${r.vE>0?' · '+brl(r.vE)+' ('+r.pc+'%)':''}</dd></div><div><dt>Saída máxima permitida</dt><dd class="num">${clk(maxS)}</dd></div>${nightRow}</dl>`;
+    text=`Resumo da Jornada\n\nEntrada: ${clk(r.e)}\nSaída Almoço: ${clk(r.s)}\nRetorno Almoço: ${clk(r.v)}\nSaída Final: ${clk(r.f)}\n\nPrimeiro Turno: ${fmt(p)}\nSegundo Turno: ${fmt(sg)}\nTotal Trabalhado: ${fmt(tot)}\nAlmoço: ${fmt(lunch)}\nJornada Contratada: ${fmt(r.J)}\n\nSaldo Banco de Horas: ${sgn(saldo)}\n\nHorário máximo permitido para saída: ${clk(maxS)}`;
+    if(r.vE>0)add('info','Valor estimado se as horas extras forem pagas. Horas compensadas com folga no banco de horas não geram pagamento.');
+    if(r.tolOn)add('info','Tolerância de ponto aplicada: variação de até 10 minutos não conta (art. 58 CLT).');
+    if(saldo>B){add('bad','Excedeu o limite diário de banco de horas em '+fmt(saldo-B)+'.');text+='\n\nAtenção: excedeu o limite diário de banco de horas.'}
+    else if(saldo<0)add('warn','Jornada incompleta: faltam '+fmt(-saldo)+'.');
+    else add('ok','Dentro do limite do banco de horas.');
+  }
+  r.text=text;last=last||{};last.text=text;
+  return{html,M};
+}
+function setStatus(k,t){$('status').className=t?'s-'+k:'';$('status').textContent=t||''}
+function calc(){
+  const r=calcDay(cur);F.forEach(i=>$(i).classList.remove('err'));
+  const b=build(r);b.M.sort((x,y)=>SEV[x.k]-SEV[y.k]);
+  $('out').innerHTML=b.html;
+  const f=b.M[0];setStatus(f?f.k:'',f?f.t:'');
+  $('notes').innerHTML=b.M.slice(1).map(m=>'<li>• '+esc(m.t)+'</li>').join('');
+  drawAcc();drawHist();drawHv();live();
+}
+function nowAbs(){const d=new Date();let n=d.getHours()*60+d.getMinutes()+d.getSeconds()/60;if(last&&last.e!=null&&n<last.e)n+=1440;return n}
+function live(){
+  const el=$('live'),rg=$('ring'),ri=$('ringIn');
+  if(!el||!rg||!ri||!last||cur!==ymd(new Date()))return;
+  const r=calcDay(cur),n=nowAbs(),C=DB.cfg,B=C.B;
+  if(n<r.v){el.innerHTML='';return}
+  const w=(r.s-r.e)+(n-r.v),rest=r.J-w;
+  if(rest>0){
+    rg.className='ring';rg.style.setProperty('--p',Math.min(w/(r.J||1)*100,100));rg.style.setProperty('--rc','var(--brand)');
+    ri.innerHTML=`<small>Sair às</small><b class="num">${clk(last.cumprir)}</b><small>faltam ${fmtS(rest,1)}</small>`;
+    el.innerHTML=`<p class="live">Faltam ${fmt(rest)} para cumprir a jornada.</p>`;return;
+  }
+  const banco=-rest,left=B-banco,lvl=banco>=B?3:banco>=C.a2?2:banco>=C.a1?1:0;
+  const col=lvl===0?'var(--ok)':lvl===1?'var(--warn)':'var(--bad)';
+  const sub=['limite em '+fmtS(left,1),'atenção · limite em '+fmtS(left,1),'BATA O PONTO · '+fmtS(left,1),'NÃO BATA MAIS O PONTO'][lvl];
+  const msg=['Jornada cumprida. Cada minuto a mais entra no banco de horas.','Banco em '+fmt(banco)+'. Prepare-se para bater o ponto.','Bata o ponto agora: faltam '+fmtS(left,1)+' para o limite do banco.','Limite do banco ultrapassado. Bater o ponto agora gera hora extra, que a empresa não permite.'][lvl];
+  rg.className='ring'+(lvl===2?' blink':lvl===3?' blink fast':'');
+  rg.style.setProperty('--p',B?Math.min(banco/B*100,100):100);rg.style.setProperty('--rc',col);
+  ri.innerHTML=`<small>Banco de horas</small><b class="num s">+${fmtS(banco)}</b><small>${sub}</small>`;
+  el.innerHTML=`<p class="live">${msg}</p>`;
+  if(lvl===1)setStatus('warn',msg);
+  else if(lvl===2)setStatus('bad',msg);
+  else if(lvl===3)setStatus('bad','Limite do banco ultrapassado. Não bata mais o ponto: isso gera hora extra, que a empresa não permite. Fale com o gestor.');
+}
+
+/* ===== Alertas ===== */
+function beep(n){try{const c=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.15;o.start(c.currentTime+i*.35);o.stop(c.currentTime+i*.35+.2)}}catch(e){}}
+function toast(msg,k){const d=document.createElement('div');d.className='s-'+k;d.innerHTML='<span></span><button aria-label="Fechar">×</button>';d.firstChild.textContent=msg;d.lastChild.onclick=()=>d.remove();$('toasts').appendChild(d);setTimeout(()=>d.remove(),k==='bad'?60000:20000)}
+function notify(t,msg,k){toast(msg,k);beep(k==='bad'?5:3);if('Notification' in window&&Notification.permission==='granted'){try{if('serviceWorker' in navigator&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(reg=>reg.showNotification(t,{body:msg,icon:'assets/icons/icon-192.png'})).catch(()=>{});else new Notification(t,{body:msg})}catch(e){}}}
+function schedule(){
+  if(!notifyOn||!last||!last.maxS||$('fin').value||cur!==ymd(new Date()))return;
+  const n=nowAbs(),A=DB.cfg.A,fr=DB.fired[cur]=DB.fired[cur]||{};
+  if(n<calcDay(cur).v)return;
+  const C=DB.cfg,c0=last.cumprir;
+  [['p1',c0-A,'Saída em breve','Faltam '+A+' min para cumprir a jornada ('+clk(c0)+').','warn'],
+   ['a1',c0,'Jornada cumprida','O banco de horas começou a subir.','ok'],
+   ['b1',c0+C.a1,'Banco em '+fmt(C.a1),'Faltam '+fmt(C.B-C.a1)+' para o limite. Prepare-se para bater o ponto.','warn'],
+   ['b2',c0+C.a2,'Banco em '+fmt(C.a2)+': bata o ponto!','Faltam '+fmt(C.B-C.a2)+' para o limite do banco ('+clk(last.maxS)+'). Bata o ponto agora.','bad'],
+   ['b3',last.maxS,'Limite ultrapassado','Não bata mais o ponto: gera hora extra, que a empresa não permite.','bad']
+  ].forEach(([key,t,ti,msg,k])=>{if(fr[key]||n<t)return;fr[key]=1;save();if(n<t+2)notify(ti,msg,k)});
+}
+
+/* ===== Exportações ===== */
+function dl(n,t,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;document.body.appendChild(a);a.click();a.remove()}
+function ics(){
+  if(!last||!last.maxS){toast('Preencha entrada, saída e volta do almoço (sem saída final).','warn');return}
+  const base=cur.replace(/-/g,''),A=DB.cfg.A;
+  const dt=m=>{const d=m>=1440?addD(cur,1).replace(/-/g,''):base,x=m%1440;return d+'T'+pad(Math.floor(x/60))+pad(x%60)+'00'};
+  const ev=(id,m,n,tg)=>['BEGIN:VEVENT','UID:'+base+'-'+id+'@jornada','DTSTAMP:'+base+'T000000','DTSTART:'+dt(m),'DTEND:'+dt(m+15),'SUMMARY:'+n,'BEGIN:VALARM','TRIGGER:-PT'+tg+'M','ACTION:DISPLAY','DESCRIPTION:'+n,'END:VALARM','END:VEVENT'];
+  dl('lembretes-jornada.ics','text/calendar',['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jornada//PT-BR',...ev('cumprir',last.cumprir,'Jornada cumprida: o banco começa a subir',A),...ev('b1',last.cumprir+DB.cfg.a1,'Banco em '+fmt(DB.cfg.a1)+': prepare-se para bater o ponto',0),...ev('b2',last.cumprir+DB.cfg.a2,'Banco em '+fmt(DB.cfg.a2)+': bata o ponto agora',0),...ev('limite',last.maxS,'Limite do banco atingido: não bata mais o ponto',0),'END:VCALENDAR'].join('\r\n'));
+  toast('Abra o arquivo baixado para adicionar ao calendário.','ok');
+}
+function csv(){
+  const ym=cur.slice(0,7),rows=[['Data','Tipo','Entrada','Saida almoco','Volta almoco','Saida final','Trabalhado','Jornada','Saldo','Extras R$','Noturno R$','Justificativa']];
+  Object.keys(DB.days).sort().filter(k=>k.startsWith(ym)).forEach(k=>{const r=calcDay(k),d=r.d;rows.push([br(k),TIPOS[r.tipo],d.ent||'',d.sal||'',d.vol||'',d.fin||'',r.worked==null?'':fmt(r.worked),fmt(r.J),r.saldo==null?'':sgn(r.saldo),r.vE?r.vE.toFixed(2).replace('.',','):'',r.vN?r.vN.toFixed(2).replace('.',','):'',(d.just||'').replace(/[;\r\n]/g,' ')])});
+  if(rows.length<2){toast('Nenhum dia registrado neste mês.','warn');return}
+  dl('espelho-'+ym+'.csv','text/csv;charset=utf-8','\ufeff'+rows.map(x=>x.join(';')).join('\r\n'));
+}
+
+/* ===== Teclado numérico de horas ===== */
+const FLOW=['ent','sal','vol'];let tgt=null,dg='';
+const sheet=$('sheet'),shD=$('shD'),shOk=$('shOk');
+function drawSheet(){shD.textContent=dg.slice(0,2).padEnd(2,'-')+':'+dg.slice(2,4).padEnd(2,'-');shOk.disabled=!(dg.length===4||dg.length===0)}
+function shake(){shD.classList.remove('shake');void shD.offsetWidth;shD.classList.add('shake')}
+function openSheet(id){tgt=id;dg=($(id).value||'').replace(':','');$('shT').textContent=(document.querySelector('label[for="'+id+'"]')||{}).textContent||'Horário';sheet.hidden=false;drawSheet();shOk.focus({preventScroll:true})}
+function closeSheet(){sheet.hidden=true;if(tgt)$(tgt).focus({preventScroll:true});tgt=null}
+function press(d){
+  if(dg.length>=4)return;
+  if(dg.length===0&&d>2)dg='0'+d;
+  else if(dg.length===1&&dg[0]==='2'&&d>3)return shake();
+  else if(dg.length===2&&d>5)return shake();
+  else dg+=d;
+  drawSheet();if(dg.length===4)setTimeout(confirmSheet,180);
+}
+function confirmSheet(){
+  if(!tgt||!(dg.length===4||dg.length===0))return;
+  const id=tgt,el=$(id);el.value=dg.length?dg.slice(0,2)+':'+dg.slice(2):'';
+  el.dispatchEvent(new Event('input',{bubbles:true}));sheet.hidden=true;tgt=null;
+  const i=FLOW.indexOf(id);
+  if(dg.length&&i>-1&&i<FLOW.length-1&&!$(FLOW[i+1]).value)setTimeout(()=>openSheet(FLOW[i+1]),150);else el.focus({preventScroll:true});
+}
+['1','2','3','4','5','6','7','8','9','Limpar','0','⌫'].forEach(k=>{
+  const b=document.createElement('button');b.type='button';b.textContent=k;if(k==='Limpar'||k==='⌫')b.className='sm';
+  b.onclick=()=>{if(k==='Limpar'){dg='';drawSheet()}else if(k==='⌫'){dg=dg.slice(0,-1);drawSheet()}else press(k)};$('keys').appendChild(b);
+});
+$('shNow').onclick=()=>{const d=new Date();dg=pad(d.getHours())+pad(d.getMinutes());drawSheet();confirmSheet()};
+$('shCancel').onclick=closeSheet;$('shBack').onclick=closeSheet;shOk.onclick=confirmSheet;
+document.querySelectorAll('.tf').forEach(el=>{el.addEventListener('click',()=>openSheet(el.id));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSheet(el.id)}})});
+document.addEventListener('keydown',e=>{
+  if(sheet.hidden)return;
+  if(/^[0-9]$/.test(e.key)){e.preventDefault();press(e.key)}
+  else if(e.key==='Backspace'){dg=dg.slice(0,-1);drawSheet()}
+  else if(e.key==='Enter'&&document.activeElement.tagName!=='BUTTON')confirmSheet();
+  else if(e.key==='Escape')closeSheet();
+});
+
+/* ===== Abas ===== */
+function showTab(t){document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!=='v-'+t);document.querySelectorAll('.tabs button').forEach(b=>{const on=b.dataset.tab===t;b.classList.toggle('on',on);b.setAttribute('aria-current',on?'page':'false')});window.scrollTo(0,0)}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+$('hdate').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+/* ===== Eventos ===== */
+function setDay(d){cur=d;fillForm();calc()}
+const onForm=()=>{readForm();save();calc()},onCfg=()=>{readCfg();save();calc()};
+[...F,'tipo','just'].forEach(i=>{$(i).addEventListener('input',onForm);$(i).addEventListener('change',onForm)});
+[...Array(7).keys()].map(i=>'wk'+i).concat(['cb','ca','a1','a2','tol','prz','ini','iniS','salr','dvs','p50','p100','pn','hide']).forEach(i=>{$(i).addEventListener('input',onCfg);$(i).addEventListener('change',onCfg)});
+document.querySelectorAll('[data-now]').forEach(b=>b.onclick=()=>{const d=new Date(),el=$(b.dataset.now);el.value=pad(d.getHours())+':'+pad(d.getMinutes());el.dispatchEvent(new Event('input',{bubbles:true}))});
+$('pv').onclick=()=>setDay(addD(cur,-1));$('nx').onclick=()=>setDay(addD(cur,1));$('hj').onclick=()=>setDay(ymd(new Date()));
+$('dt').addEventListener('change',()=>{if($('dt').value)setDay($('dt').value)});
+$('hc').onclick=e=>{const t=e.target.closest('tr[data-d]');if(t){setDay(t.dataset.d);showTab('hoje')}};
+$('hc').onkeydown=e=>{if(e.key==='Enter'){const t=e.target.closest('tr[data-d]');if(t){setDay(t.dataset.d);showTab('hoje')}}};
+$('btnNotify').onclick=async()=>{
+  notifyOn=true;beep(1);
+  if('Notification' in window&&Notification.permission==='default'){try{await Notification.requestPermission()}catch(e){}}
+  delete DB.fired[cur];save();$('btnNotify').textContent='Alertas ativados';$('btnNotify').classList.add('on');
+  toast('Alertas ativados. Mantenha esta aba aberta ou use os lembretes no calendário.','ok');
+};
+$('btnCopy').onclick=async()=>{
+  if(!last||!last.text){toast('Preencha os horários para copiar.','warn');return}
+  try{await navigator.clipboard.writeText(last.text)}catch(e){const t=document.createElement('textarea');t.value=last.text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
+  toast('Resultado copiado.','ok');
+};
+$('btnClear').onclick=()=>{delete DB.days[cur];delete DB.fired[cur];save();fillForm();calc()};
+$('btnIcs').onclick=ics;$('btnCsv').onclick=csv;$('btnPdf').onclick=()=>window.print();
+$('btnBkp').onclick=()=>dl('backup-jornada.json','application/json',JSON.stringify(DB));
+$('btnRst').onclick=()=>$('fileRst').click();
+$('fileRst').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{const d=validateBackup(JSON.parse(rd.result));DB=d;const saved=save();fillCfg();fillForm();calc();if(saved)toast('Backup restaurado.','ok')}catch(x){toast('Arquivo de backup inválido.','bad')}};
+  rd.onerror=()=>toast('Não foi possível ler o arquivo de backup.','bad');rd.readAsText(f);e.target.value='';
+};
+
+load();fillCfg();fillForm();calc();
+setInterval(()=>{const d=new Date();$('clock').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());live();schedule()},1000);
+</script>
 <script src="assets/js/pwa.js" defer></script>
 </body>
 </html>

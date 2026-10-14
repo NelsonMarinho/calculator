@@ -1,14 +1,15 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
+const {prepare}=require('./prepare.cjs');
 const PUBLIC_FILES=[
   'index.html','manifest.webmanifest','sw.js',
-  'assets/css/app.css','assets/js/core.js','assets/js/storage.js',
-  'assets/js/app.js','assets/js/pwa.js',
+  'assets/css/pwa.css','assets/js/pwa.js',
   'assets/icons/icon-192.png','assets/icons/icon-512.png','assets/icons/maskable-512.png'
 ];
 
 function build(root=path.resolve(__dirname,'..')){
+  prepare(root);
   const output=path.join(root,'dist');
   const files=PUBLIC_FILES.map(name=>({name,content:fs.readFileSync(path.join(root,name))}));
   const worker=files.find(file=>file.name==='sw.js').content.toString('utf8');

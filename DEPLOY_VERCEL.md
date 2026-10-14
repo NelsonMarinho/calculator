@@ -1,23 +1,16 @@
-# Deploy na Vercel
+# Deploy da v8 na Vercel
 
-O projeto está preparado para hospedagem estática. `vercel.json` define o build, a pasta publicada e os cabeçalhos HTTP, conforme a [documentação oficial de configuração](https://vercel.com/docs/project-configuration/vercel-json).
+O build usa **`calculador-jornada-v8.html` como app**, preservando seu CSS e JavaScript. A integração acrescenta instalação/offline e uma seção em Ajustes. O `index.html` anterior foi substituído pela cópia gerada da v8.
 
-## 1. Enviar a preparação ao GitHub
-
-No terminal do notebook, dentro da pasta do projeto:
+## Enviar para o GitHub
 
 ```bash
 git add -A
-git commit -m "build: preparar deploy estático na Vercel"
+git commit -m "feat: publicar HTML v8 como aplicativo instalável"
 git push origin main
 ```
 
-## 2. Importar o projeto
-
-1. Entre na Vercel e selecione **Add New → Project**.
-2. Escolha a integração com GitHub e importe **NelsonMarinho/calculator**.
-3. Confira as configurações abaixo; os valores de build e saída já estão definidos em `vercel.json`.
-4. Clique em **Deploy**.
+## Configuração do projeto
 
 | Campo | Valor |
 |---|---|
@@ -25,36 +18,23 @@ git push origin main
 | Root Directory | Raiz do repositório (`./`) |
 | Build Command | `npm run build` |
 | Output Directory | `dist` |
-| Install Command | Sem comando; definido como string vazia no arquivo |
-| Node.js | 24.x, definido em `package.json` |
-| Variáveis de ambiente | Nenhuma necessária |
+| Install Command | Vazio, definido em `vercel.json` |
+| Node.js | 24.x |
+| Variáveis de ambiente | Nenhuma |
 | Production Branch | `main` |
 
-A integração com GitHub pode gerar novos deploys a partir dos próximos pushes ([documentação da Vercel](https://vercel.com/docs/git/vercel-for-github)). Use o domínio de produção exibido no painel para instalar o app; evite alternar entre URLs temporárias de preview.
+Se o repositório já está conectado à Vercel, o push pode iniciar o deploy automaticamente. Caso contrário, use **Add New → Project** para importar `NelsonMarinho/calculator`. A configuração segue a [documentação oficial da Vercel](https://vercel.com/docs/project-configuration/vercel-json).
 
-## 3. Conferir o app publicado
+## Build
 
-- Abra o endereço HTTPS de produção no notebook e no celular.
-- Confira se aparece **Pronto para usar offline**.
-- Instale pelo botão do app ou pelo menu do navegador Android.
-- Faça um registro, feche e reabra para conferir a persistência.
-- Depois do preparo inicial, ative o modo avião e confira que o app abre e mostra os registros.
-- Abra `/manifest.webmanifest`, `/sw.js` e os ícones para conferir que são servidos corretamente. Caminhos inexistentes devem continuar retornando 404; não há uma reescrita geral para HTML.
+`npm run build` gera `index.html` a partir da v8, verifica os arquivos, executa 27 testes e gera `dist` com oito arquivos públicos. Somente a v8 preparada, CSS de integração, JavaScript da PWA, manifesto, service worker e ícones entram na publicação. O cache recebe uma versão calculada pelo conteúdo.
 
-Se tiver dados no HTML antigo ou em localhost, exporte **Espelho → Backup** e restaure no endereço de produção. Os dados são locais por endereço/navegador; o deploy não os transfere automaticamente. Uma mudança de domínio também exige transferência por backup.
+## Depois de publicar
 
-## O que o build faz
+1. Abra o domínio de produção e confira o visual da v8.
+2. Na aba Ajustes, confira **Pronto para usar offline**.
+3. Se já instalou uma versão anterior no mesmo domínio, use **Atualizar aplicativo** quando a nova versão estiver pronta.
+4. Confira as quatro batidas e o avanço automático do teclado; feche e reabra para confirmar a persistência.
+5. Instale no Android e reabra em modo avião após o preparo inicial.
 
-```bash
-npm run build
-```
-
-O comando verifica a sintaxe e os arquivos, executa os 28 testes e gera `dist` com 11 arquivos públicos. O HTML original, os scripts, os testes, a documentação e os arquivos locais não entram na pasta publicada.
-
-O `sw.js` gerado recebe uma versão de cache derivada do conteúdo dos arquivos. Uma alteração nos arquivos públicos muda essa versão; um build idêntico mantém a mesma versão. O arquivo fonte continua intacto. A nova versão do app aguarda o botão **Atualizar**, já presente na interface.
-
-Os cabeçalhos configurados revalidam os arquivos no navegador e impedem cache do `sw.js` na CDN da Vercel. O acesso offline continua usando o cache explícito do service worker ([referência de cache da Vercel](https://vercel.com/docs/caching/cache-control-headers)).
-
-## Limites da validação feita aqui
-
-O build e os testes foram executados localmente. Os testes de cache usam simulação. Esta preparação não criou um projeto na conta Vercel nem publicou um endereço. A instalação real no Android e os cabeçalhos do endereço publicado devem ser conferidos após o deploy.
+Use sempre o domínio de produção para manter os dados no mesmo endereço. Caso mude de domínio, transfira-os por backup. A instalação real em Android deve ser validada no aparelho.

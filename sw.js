@@ -1,9 +1,9 @@
 /* Bump the version on every release that changes a cached file. */
-const VERSION='v1';
+const VERSION='v8';
 const BASE=new URL('./',self.location.href);
 const PREFIX='minha-jornada:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
-const SHELL=['./','index.html','manifest.webmanifest','assets/css/app.css','assets/js/core.js','assets/js/storage.js','assets/js/app.js','assets/js/pwa.js','assets/icons/icon-192.png','assets/icons/icon-512.png','assets/icons/maskable-512.png'];
+const SHELL=['./','index.html','manifest.webmanifest','assets/css/pwa.css','assets/js/pwa.js','assets/icons/icon-192.png','assets/icons/icon-512.png','assets/icons/maskable-512.png'];
 const URLS=SHELL.map(path=>new URL(path,BASE).href);
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(URLS)));
