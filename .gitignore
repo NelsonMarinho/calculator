@@ -1,0 +1,31 @@
+# Configuração local e credenciais
+/.agents/
+/.codex/
+/.aws/
+/.runtime/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependências e arquivos gerados
+node_modules/
+__pycache__/
+*.py[cod]
+*.log
+/minha-jornada-pwa.zip
+/calculator-primeiro-envio.bundle
+/dist/
+/coverage/
+/test-results/
+/playwright-report/
+
+# Backups pessoais exportados pelo aplicativo
+backup-jornada*.json
+
+# Arquivos do sistema e do editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

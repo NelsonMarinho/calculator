@@ -1,0 +1,30 @@
+name: Verificar aplicativo
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Verificar sintaxe e arquivos públicos
+        run: npm run check
+      - name: Testar cálculos, backups e cache offline simulado
+        run: npm test
+      - name: Verificar scripts Python
+        run: python3 -m py_compile scripts/serve.py scripts/package.py
+      - name: Montar pacote público
+        run: python3 scripts/package.py

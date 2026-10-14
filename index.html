@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#142840">
+<meta name="color-scheme" content="light dark">
+<title>Minha Jornada</title>
+<meta name="description" content="Registre sua jornada, acompanhe o banco de horas e consulte o espelho mensal, mesmo offline.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<header class="bar"><div class="bar-in"><div class="brand-block"><div class="brand-eyebrow">RH · GESTÃO DE JORNADA</div><div class="date" id="hdate"></div><h1>Minha Jornada</h1></div><div id="clock" class="num">--:--:--</div></div></header>
+<main class="wrap" id="mainContent">
+  <div class="app-status"><span id="saveState" class="save-state">Dados neste aparelho</span><span id="networkState" role="status">Verificando acesso offline…</span></div>
+  <section class="install-banner" id="installBanner" aria-label="Instalar aplicativo">
+    <div><strong>Sua jornada, sempre à mão</strong><p>Instale no celular para abrir pela tela inicial.</p></div><button class="b p" id="installButton" type="button">Instalar</button>
+  </section>
+  <section class="install-help card" id="installHelp" hidden><h2>Como instalar</h2><p id="installInstructions"></p><button class="b" type="button" id="closeInstallHelp">Entendi</button></section>
+  <section class="update-banner" id="updateBanner" hidden><span>Uma nova versão está pronta.</span><button class="b" id="updateButton" type="button">Atualizar</button></section>
+  <noscript><p class="card">Ative o JavaScript no navegador para registrar e calcular sua jornada.</p></noscript>
+<section class="view" id="v-hoje">
+  <div class="view-heading"><span class="overline">SEU DIA DE TRABALHO</span><h2>Minha jornada</h2><p>Horários, descanso e banco de horas em um só lugar.</p></div>
+  <div class="daynav">
+    <button class="ib" id="pv" type="button" aria-label="Dia anterior">‹</button>
+    <label class="dpick"><span id="dlabel">Hoje</span><input type="date" id="dt" aria-label="Escolher data"></label>
+    <button class="ib" id="nx" type="button" aria-label="Próximo dia">›</button>
+    <button class="chip2" id="hj" type="button">Hoje</button>
+  </div>
+  <select id="tipo" class="pill" aria-label="Tipo de dia"><option value="trab">Dia de trabalho</option><option value="fer">Feriado / folga trabalhada</option><option value="comp">Folga compensada pelo banco</option><option value="atm">Atestado / abonado</option></select>
+  <label for="modo" class="hint" style="display:block;margin:0">Formato da jornada</label>
+  <select id="modo" class="pill"><option value="intervalo">Com intervalo — 4 batidas</option><option value="continua">Contínua, sem intervalo — 2 batidas (máx. 6h)</option></select>
+  <p class="hint" id="modoHint"></p>
+  <button class="b p quick-punch" id="quickPunch" type="button" hidden>Registrar entrada</button><p class="hint" id="punchHint" hidden></p>
+  <section class="card" id="restCard"></section>
+  <div class="times" id="times"><div class="f"><label for="ent">Entrada</label><input id="ent" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="ent">Agora</button></div><div class="f"><label for="sal">Saída almoço</label><input id="sal" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="sal">Agora</button></div><div class="f"><label for="vol">Volta almoço</label><input id="vol" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="vol">Agora</button></div><div class="f"><label for="fin">Saída final</label><input id="fin" class="tf" readonly inputmode="none" placeholder="--:--"><button type="button" data-now="fin">Agora</button></div></div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <section class="card" id="out" aria-live="polite"></section>
+  <ul id="notes"></ul>
+  <details class="adj"><summary>Ajuste manual (registrar motivo)</summary><input id="just" type="text" maxlength="120" placeholder="Ex.: esqueci de marcar a volta do almoço"></details>
+  <div class="actions">
+    <button class="b p" id="btnNotify" type="button">Ativar alertas</button>
+    <button class="b" id="btnCopy" type="button">Copiar</button>
+    <button class="b" id="btnClear" type="button">Limpar dia</button>
+  </div>
+</section>
+
+<section class="view" id="v-mes" hidden>
+  <div class="view-heading"><span class="overline">ACOMPANHAMENTO MENSAL</span><h2>Espelho de ponto</h2><p>Consulte seus registros, saldos e relatórios.</p></div>
+  <div class="month-control f"><label for="monthPicker">Mês do espelho</label><input type="month" id="monthPicker"></div>
+  <section class="card"><div class="acc" id="acc"></div></section>
+  <section class="card" id="hc"></section>
+  <section class="card"><h2>Exportar e backup</h2>
+    <div class="tools">
+      <button class="b" id="btnIcs" type="button">Lembretes no calendário</button>
+      <button class="b" id="btnCsv" type="button">Planilha do mês</button>
+      <button class="b" id="btnPdf" type="button">PDF do mês</button>
+      <button class="b" id="btnBkp" type="button">Backup</button>
+      <button class="b" id="btnRst" type="button">Restaurar backup</button>
+      <input type="file" id="fileRst" accept=".json,application/json" hidden>
+    </div>
+  </section>
+</section>
+
+<section class="view" id="v-cfg" hidden>
+  <div class="view-heading"><span class="overline">PREFERÊNCIAS DE TRABALHO</span><h2>Configurações</h2><p>Personalize sua jornada, remuneração e alertas.</p></div>
+  <section class="card"><h2>Jornada e banco de horas</h2>
+    <p class="hint">Jornada diária por dia da semana</p>
+    <div class="wk f"><div><label for="wk1">Seg</label><input id="wk1" class="tf" readonly inputmode="none"></div><div><label for="wk2">Ter</label><input id="wk2" class="tf" readonly inputmode="none"></div><div><label for="wk3">Qua</label><input id="wk3" class="tf" readonly inputmode="none"></div><div><label for="wk4">Qui</label><input id="wk4" class="tf" readonly inputmode="none"></div><div><label for="wk5">Sex</label><input id="wk5" class="tf" readonly inputmode="none"></div><div><label for="wk6">Sáb</label><input id="wk6" class="tf" readonly inputmode="none"></div><div><label for="wk0">Dom</label><input id="wk0" class="tf" readonly inputmode="none"></div></div>
+    <div class="cfg f">
+      <div><label for="cb">Banco máx./dia</label><input id="cb" class="tf" readonly inputmode="none"></div>
+      <div><label for="ca">Avisar antes (min)</label><input type="number" id="ca" min="1" max="60"></div>
+      <div><label for="a1">Alerta 1 (banco)</label><input id="a1" class="tf" readonly inputmode="none"></div>
+      <div><label for="a2">Alerta 2 (banco)</label><input id="a2" class="tf" readonly inputmode="none"></div>
+      <div class="w2"><label for="prz">Prazo de compensação</label><select id="prz"><option value="6">6 meses (acordo individual)</option><option value="12">12 meses (acordo coletivo)</option></select></div>
+      <div class="w2"><label for="ini">Saldo anterior do banco</label><div style="display:flex;gap:6px"><select id="iniS" style="width:62px"><option>+</option><option>-</option></select><input id="ini" class="tf" readonly inputmode="none"></div></div>
+      <div class="w2"><label><input type="checkbox" id="tol" style="width:auto"> Tolerância de ponto (10 min/dia, art. 58 CLT)</label></div>
+    </div>
+  </section>
+  <section class="card"><h2>Salário e valor da hora</h2>
+    <div class="cfg f">
+      <div class="w2"><label for="salr">Salário mensal bruto (R$)</label><input id="salr" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>
+      <div class="w2"><label for="dvs">Horas por mês (divisor)</label><input type="number" id="dvs" min="100" max="300"></div>
+      <div><label for="p50">Extra (%)</label><input type="number" id="p50" min="0" max="300"></div>
+      <div><label for="p100">Dom./feriado (%)</label><input type="number" id="p100" min="0" max="300"></div>
+      <div><label for="pn">Noturno (%)</label><input type="number" id="pn" min="0" max="300"></div>
+      <div class="w4"><label><input type="checkbox" id="hide" style="width:auto"> Ocultar valores em R$ na tela</label></div>
+    </div>
+    <p class="hint" id="hv"></p>
+  </section>
+  <section class="card"><h2>Sobre o aplicativo</h2><p class="hint">Os registros ficam neste aparelho e neste navegador. Use Backup e Restaurar backup em Espelho para transferir seus dados para outro dispositivo.</p><p class="hint">Os alertas dependem do app aberto; para lembrar com a tela bloqueada, exporte os lembretes para seu calendário.</p><button class="b" id="installSettings" type="button">Instalação e uso offline</button></section>
+</section>
+<p class="disc">Estimativa para acompanhamento pessoal. Valores em R$ são aproximados. Vale o registro oficial do ponto da empresa, a folha de pagamento e o seu acordo de banco de horas.</p>
+</main>
+<nav class="tabs" aria-label="Seções">
+  <button type="button" data-tab="hoje" class="on" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Hoje</button>
+  <button type="button" data-tab="mes"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Espelho</button>
+  <button type="button" data-tab="cfg"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Ajustes</button>
+</nav>
+
+<div class="toasts" id="toasts" role="alert"></div>
+<div class="sheet" id="sheet" hidden>
+  <div class="back" id="shBack"></div>
+  <div class="pan" role="dialog" aria-modal="true" aria-labelledby="shT">
+    <div class="shh"><span id="shT"></span><button type="button" class="chip" id="shNow">Usar hora atual</button></div>
+    <div class="disp num" id="shD" aria-live="polite">--:--</div>
+    <div class="keys" id="keys"></div>
+    <div class="shf"><button class="b" id="shCancel" type="button">Cancelar</button><button class="b p" id="shOk" type="button">Definir</button></div>
+  </div>
+</div>
+
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/storage.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/pwa.js" defer></script>
+</body>
+</html>
