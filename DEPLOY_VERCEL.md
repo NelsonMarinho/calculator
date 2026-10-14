@@ -27,7 +27,7 @@ Se o repositório já está conectado à Vercel, o push pode iniciar o deploy au
 
 ## Build
 
-`npm run build` gera `index.html` a partir da v8, verifica os arquivos, executa 27 testes e gera `dist` com oito arquivos públicos. Somente a v8 preparada, CSS de integração, JavaScript da PWA, manifesto, service worker e ícones entram na publicação. O cache recebe uma versão calculada pelo conteúdo.
+`npm run build` gera `index.html` a partir da v8, verifica os arquivos, executa 35 testes e gera `dist` com oito arquivos públicos. Somente a v8 preparada, CSS de integração, JavaScript da PWA, manifesto, service worker e ícones entram na publicação. O cache recebe uma versão calculada pelo conteúdo.
 
 ## Depois de publicar
 

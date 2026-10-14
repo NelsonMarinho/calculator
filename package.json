@@ -1,6 +1,6 @@
 {
   "name": "minha-jornada",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "private": true,
   "description": "Controle de jornada instalável e offline, sem dependências em produção.",
   "scripts": {

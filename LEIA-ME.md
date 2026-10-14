@@ -43,6 +43,18 @@ O comando usa Node.js para gerar o app antes de montar `minha-jornada-pwa.zip`. 
 
 ## Verificação feita
 
-Os 27 testes automatizados cobrem cálculos, virada de meia-noite, tolerância, folgas, backups, falhas de gravação, preservação do HTML v8 no build e cache simulado. As 24 verificações em Chrome real cobrem fluxo de teclado, quatro batidas, persistência, histórico, rejeição de backup inválido, abertura offline e ausência de rolagem horizontal em telas de 320 a 1440 pixels. Também foram inspecionadas imagens das telas claras e escuras.
+Os 35 testes automatizados cobrem cálculos, virada de meia-noite, tolerância, folgas, backups, falhas de gravação, preservação do HTML v8 no build e cache simulado. As 28 verificações em Chrome real cobrem fluxo de teclado, quatro batidas, persistência, histórico, rejeição de backup inválido, abertura offline e ausência de rolagem horizontal em telas de 320 a 1440 pixels. Também foram inspecionadas imagens das telas claras e escuras.
 
 A instalação em um Android físico ainda deve ser conferida após o deploy. Os cálculos e as mensagens seguem seu HTML e são estimativas para acompanhamento pessoal, conforme a observação presente na v8.
+
+## Som dos alertas
+
+Em **Ajustes → Som dos alertas**, escolha:
+
+- **Toque melódico do app**: melodia repetida nos avisos, com mais repetições nos alertas urgentes. Use o controle de volume do app e confira o volume de mídia do celular. Toque em **Ativar alertas** a cada abertura para habilitar os alertas e liberar o áudio.
+- **Som do celular (notificação)**: usa o som da notificação configurado no Android, sem tocar a melodia do app ao mesmo tempo. Permita as notificações e use **Testar toque**. Mantenha uma notificação pressionada para abrir suas configurações; o caminho e as opções de som variam por aparelho e navegador ([ajuda do Android](https://support.google.com/android/answer/9079661?hl=pt-BR)).
+- **Sem som**: mantém os avisos na tela e solicita notificações silenciosas.
+
+A PWA não acessa a lista de toques do Android nem substitui o volume, o modo silencioso ou o Não Perturbe do aparelho. O som nativo depende das configurações de notificação ([API de notificações](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification)). As preferências de som ficam salvas junto aos dados e entram no backup.
+
+O contexto de áudio é criado/retomado após interação e reutilizado nos próximos toques, seguindo a [política de reprodução do Chrome](https://developer.chrome.com/blog/autoplay). Essa melhoria não agenda notificações com o app fechado: para isso, continuam disponíveis os lembretes no calendário.

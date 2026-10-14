@@ -31,6 +31,7 @@ Os alertas do app dependem de ele continuar aberto. Para lembretes com o app fec
 - Validação do backup antes de substituir os registros.
 - Configuração padrão de dias da semana sem compartilhar o array editável.
 - Notificações via service worker quando a PWA está ativa no Android.
+- Toque melódico com volume, opção de som da notificação do celular, modo silencioso e teste em Ajustes.
 - Rótulos e botões “Agora” sem sobreposição em telas pequenas; ajustes em duas colunas no celular.
 
 Esses ajustes não acrescentam os fluxos antigos de jornada contínua, bloqueio de entrada, botão de próxima batida ou confirmação manual obrigatória.
@@ -42,9 +43,9 @@ npm run check
 npm test
 ```
 
-Há **27 testes automatizados** de cálculos da v8, backups, geração do app e cache simulado. O build testa que o CSS e o JavaScript inline publicados correspondem aos do HTML v8.
+Há **35 testes automatizados** de cálculos da v8, backups, geração do app, cache simulado e alertas sonoros. O build testa que o CSS e o JavaScript inline publicados correspondem aos do HTML v8.
 
-Também foram feitas **24 verificações no Chrome real**, incluindo teclado com avanço automático, quatro batidas, histórico, reabertura, backup inválido, modo offline e telas de 320, 360, 390 e 1440 pixels. As aparências clara/escura foram inspecionadas. Isso não substitui a instalação num aparelho Android físico.
+Também foram feitas **28 verificações no Chrome real**, incluindo teste do toque, persistência das preferências de som, teclado com avanço automático, quatro batidas, histórico, reabertura, backup inválido, modo offline e telas de 320, 360, 390 e 1440 pixels. As aparências clara/escura foram inspecionadas. Isso não substitui a instalação num aparelho Android físico.
 
 Para repetir a verificação opcional com Playwright instalado e uma prévia rodando na porta 8085:
 

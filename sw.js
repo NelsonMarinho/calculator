@@ -24,3 +24,12 @@ self.addEventListener('fetch',event=>{
     event.respondWith(caches.open(CACHE).then(cache=>cache.match(event.request)).then(cached=>cached||fetch(event.request)));
   }
 });
+self.addEventListener('notificationclick',event=>{
+  event.notification.close();
+  const target=new URL('index.html#hoje',BASE).href;
+  event.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(async clients=>{
+    const client=clients.find(item=>item.url.startsWith(BASE.href));
+    if(client){await client.navigate(target);return client.focus();}
+    return self.clients.openWindow(target);
+  }));
+});

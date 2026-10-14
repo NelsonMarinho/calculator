@@ -162,6 +162,13 @@ tr[data-d]{cursor:pointer}tr.sel td{background:var(--infobg)}td small{display:bl
     </div>
     <p class="hint" id="hv"></p>
   </section>
+  <section class="card"><h2>Som dos alertas</h2>
+    <div class="f"><label for="soundMode">Como avisar</label><select id="soundMode"><option value="app">Toque melódico do app</option><option value="system">Som do celular (notificação)</option><option value="silent">Sem som</option></select></div>
+    <div class="f" style="margin-top:12px"><label for="soundVolume">Volume do toque do app · <span id="soundVolumeLabel">70%</span></label><input type="range" id="soundVolume" min="0" max="100" step="5" value="70"></div>
+    <div class="actions"><button class="b" type="button" id="testSound">Testar toque</button></div>
+    <p class="hint" style="margin-top:12px">Para escolher o toque do celular, mantenha uma notificação pressionada e abra suas configurações de som. As opções variam conforme o Android e o navegador. O modo silencioso e o Não Perturbe podem impedir o toque.</p>
+    <p class="hint">Os alertas dependem de o app continuar aberto. Para avisos com o app fechado, use os lembretes no calendário.</p>
+  </section>
 
   <section class="card" id="pwaSettings"><h2>Aplicativo</h2><p class="hint" id="pwaStatus" role="status">Preparando acesso offline…</p><p class="hint">Os dados ficam neste aparelho. Use Backup para transferi-los. Alertas com o app fechado dependem dos lembretes exportados para o calendário.</p><div class="actions"><button class="b" id="pwaInstall" type="button">Instalar aplicativo</button><button class="b" id="pwaUpdate" type="button" hidden>Atualizar aplicativo</button></div><p class="hint" id="pwaHelp" hidden></p></section>
 </section>
@@ -217,6 +224,8 @@ function validateBackup(data){
   const cfg={...DEF,wk:[...DEF.wk]};
   if(data.cfg.wk!==undefined){if(!Array.isArray(data.cfg.wk)||data.cfg.wk.length!==7||data.cfg.wk.some(n=>!Number.isInteger(n)||n<0||n>1439))throw new Error('Jornada inválida');cfg.wk=[...data.cfg.wk];}
   Object.keys(DEF).filter(k=>k!=='wk').forEach(k=>{if(data.cfg[k]!==undefined){const n=data.cfg[k];if(typeof n!=='number'||!Number.isFinite(n)||k!=='ini'&&n<0||k==='div'&&n===0)throw new Error('Configuração inválida');cfg[k]=n;}});
+  if(data.cfg.soundMode!==undefined){if(!['app','system','silent'].includes(data.cfg.soundMode))throw new Error('Som inválido');cfg.soundMode=data.cfg.soundMode;}
+  if(data.cfg.soundVolume!==undefined){if(typeof data.cfg.soundVolume!=='number'||!Number.isFinite(data.cfg.soundVolume)||data.cfg.soundVolume<0||data.cfg.soundVolume>1)throw new Error('Volume inválido');cfg.soundVolume=data.cfg.soundVolume;}
   const days=Object.create(null);
   Object.keys(data.days).forEach(date=>{
     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||ymd(pd(date))!==date||!object(data.days[date]))throw new Error('Registro inválido');
@@ -230,7 +239,7 @@ function validateBackup(data){
 
 function fillForm(){const d=DB.days[cur]||{};F.forEach(i=>$(i).value=d[i]||'');$('tipo').value=d.tipo||'trab';$('just').value=d.just||'';$('dt').value=cur;$('just').closest('details').open=!!d.just;$('dlabel').textContent=(cur===ymd(new Date())?'Hoje · ':'')+pd(cur).toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'})}
 function readForm(){const d={};F.forEach(i=>{if($(i).value)d[i]=$(i).value});if($('tipo').value!=='trab')d.tipo=$('tipo').value;if($('just').value.trim())d.just=$('just').value.trim();if(Object.keys(d).length)DB.days[cur]=d;else delete DB.days[cur];delete DB.fired[cur]}
-function fillCfg(){const c=DB.cfg;for(let i=0;i<7;i++)$('wk'+i).value=fmt(c.wk[i]);$('cb').value=fmt(c.B);$('a1').value=fmt(c.a1);$('a2').value=fmt(c.a2);$('ca').value=c.A;$('tol').checked=!!c.tol;$('prz').value=c.prz;$('ini').value=fmt(Math.abs(c.ini));$('iniS').value=c.ini<0?'-':'+';$('salr').value=c.sal?c.sal.toFixed(2).replace('.',','):'';$('dvs').value=c.div;$('p50').value=c.p50;$('p100').value=c.p100;$('pn').value=c.pn;$('hide').checked=!!c.hide}
+function fillCfg(){const c=DB.cfg;for(let i=0;i<7;i++)$('wk'+i).value=fmt(c.wk[i]);$('cb').value=fmt(c.B);$('a1').value=fmt(c.a1);$('a2').value=fmt(c.a2);$('ca').value=c.A;$('tol').checked=!!c.tol;$('prz').value=c.prz;$('ini').value=fmt(Math.abs(c.ini));$('iniS').value=c.ini<0?'-':'+';$('salr').value=c.sal?c.sal.toFixed(2).replace('.',','):'';$('dvs').value=c.div;$('p50').value=c.p50;$('p100').value=c.p100;$('pn').value=c.pn;$('hide').checked=!!c.hide;fillSoundSettings()}
 function readCfg(){const c=DB.cfg;for(let i=0;i<7;i++)c.wk[i]=toMin($('wk'+i).value)||0;c.B=toMin($('cb').value)||0;c.a1=toMin($('a1').value)||110;c.a2=toMin($('a2').value)||115;c.A=Math.min(60,Math.max(1,+$('ca').value||10));c.tol=$('tol').checked?1:0;c.prz=+$('prz').value;const m=toMin($('ini').value)||0;c.ini=$('iniS').value==='-'?-m:m;c.sal=parseBR($('salr').value);c.div=num('dvs',220)||220;c.p50=num('p50',50);c.p100=num('p100',100);c.pn=num('pn',20);c.hide=$('hide').checked?1:0}
 
 /* ===== Cálculo de um dia ===== */
@@ -355,9 +364,34 @@ function live(){
 }
 
 /* ===== Alertas ===== */
-function beep(n){try{const c=new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.15;o.start(c.currentTime+i*.35);o.stop(c.currentTime+i*.35+.2)}}catch(e){}}
+let alertAudio=null;
+function soundSettings(){return{mode:['app','system','silent'].includes(DB.cfg.soundMode)?DB.cfg.soundMode:'app',volume:Number.isFinite(DB.cfg.soundVolume)?Math.min(1,Math.max(0,DB.cfg.soundVolume)):.7};}
+function fillSoundSettings(){const sound=soundSettings();$('soundMode').value=sound.mode;$('soundVolume').value=Math.round(sound.volume*100);$('soundVolume').disabled=sound.mode!=='app';$('soundVolumeLabel').textContent=Math.round(sound.volume*100)+'%';}
+async function enableAlertAudio(){
+  if(soundSettings().mode!=='app')return false;
+  try{if(!alertAudio||alertAudio.state==='closed'){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return false;alertAudio=new Audio();}if(alertAudio.state==='suspended')await alertAudio.resume();return alertAudio.state==='running';}catch(e){return false;}
+}
+async function beep(n=1){
+  const sound=soundSettings();if(sound.mode!=='app'||!sound.volume||!await enableAlertAudio())return false;
+  const urgent=n>=5,notes=urgent?[880,1174.66,880,1174.66]:[659.25,783.99,1046.5,783.99];
+  const repeats=n===1?1:urgent?3:2,step=urgent?.2:.28,duration=urgent?.16:.22,start=alertAudio.currentTime+.02;
+  for(let repeat=0;repeat<repeats;repeat++)notes.forEach((frequency,index)=>{
+    const when=start+repeat*(notes.length*step+.25)+index*step;
+    const oscillator=alertAudio.createOscillator(),gain=alertAudio.createGain();
+    oscillator.type='triangle';oscillator.frequency.setValueAtTime(frequency,when);
+    gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(sound.volume*.25,when+.02);gain.gain.linearRampToValueAtTime(0,when+duration);
+    oscillator.connect(gain);gain.connect(alertAudio.destination);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};oscillator.start(when);oscillator.stop(when+duration+.02);
+  });
+  return true;
+}
+async function systemNotification(title,message,kind='info'){
+  if(!('Notification' in window)||Notification.permission!=='granted')return false;
+  const mode=soundSettings().mode,options={body:message,icon:'assets/icons/icon-192.png',tag:'jornada-'+kind,renotify:true,data:{url:'index.html#hoje'}};
+  if(mode==='system')options.vibrate=[200,100,200];else options.silent=true;
+  try{if('serviceWorker' in navigator&&navigator.serviceWorker.controller){const registration=await navigator.serviceWorker.ready;await registration.showNotification(title,options);}else new Notification(title,options);return true;}catch(e){return false;}
+}
 function toast(msg,k){const d=document.createElement('div');d.className='s-'+k;d.innerHTML='<span></span><button aria-label="Fechar">×</button>';d.firstChild.textContent=msg;d.lastChild.onclick=()=>d.remove();$('toasts').appendChild(d);setTimeout(()=>d.remove(),k==='bad'?60000:20000)}
-function notify(t,msg,k){toast(msg,k);beep(k==='bad'?5:3);if('Notification' in window&&Notification.permission==='granted'){try{if('serviceWorker' in navigator&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(reg=>reg.showNotification(t,{body:msg,icon:'assets/icons/icon-192.png'})).catch(()=>{});else new Notification(t,{body:msg})}catch(e){}}}
+async function notify(t,msg,k){toast(msg,k);const results=await Promise.all([beep(k==='bad'?5:3),systemNotification(t,msg,k)]);return{tone:results[0],notification:results[1]};}
 function schedule(){
   if(!notifyOn||!last||!last.maxS||$('fin').value||cur!==ymd(new Date()))return;
   const n=nowAbs(),A=DB.cfg.A,fr=DB.fired[cur]=DB.fired[cur]||{};
@@ -441,10 +475,21 @@ $('dt').addEventListener('change',()=>{if($('dt').value)setDay($('dt').value)});
 $('hc').onclick=e=>{const t=e.target.closest('tr[data-d]');if(t){setDay(t.dataset.d);showTab('hoje')}};
 $('hc').onkeydown=e=>{if(e.key==='Enter'){const t=e.target.closest('tr[data-d]');if(t){setDay(t.dataset.d);showTab('hoje')}}};
 $('btnNotify').onclick=async()=>{
-  notifyOn=true;beep(1);
-  if('Notification' in window&&Notification.permission==='default'){try{await Notification.requestPermission()}catch(e){}}
+  const permission='Notification' in window&&Notification.permission==='default'?Notification.requestPermission().catch(()=>null):Promise.resolve(null);
+  notifyOn=true;await enableAlertAudio();await beep(1);await permission;
   delete DB.fired[cur];save();$('btnNotify').textContent='Alertas ativados';$('btnNotify').classList.add('on');
-  toast('Alertas ativados. Mantenha esta aba aberta ou use os lembretes no calendário.','ok');
+  if(soundSettings().mode==='system'&&(!('Notification' in window)||Notification.permission!=='granted'))toast('Para o som do celular, permita as notificações nas configurações do navegador. O app continuará mostrando avisos na tela.','warn');
+  else toast('Alertas ativados. Mantenha o app aberto ou use os lembretes no calendário.','ok');
+};
+$('soundMode').onchange=()=>{DB.cfg.soundMode=$('soundMode').value;save();fillSoundSettings();};
+$('soundVolume').oninput=()=>{DB.cfg.soundVolume=+$('soundVolume').value/100;save();fillSoundSettings();};
+$('testSound').onclick=async()=>{
+  const mode=soundSettings().mode;
+  if(mode==='silent'){toast('Os avisos estão configurados sem som.','info');return;}
+  if(mode==='app'){if(!soundSettings().volume){toast('O volume do toque está em 0%. Aumente-o para testar.','info');return;}const played=await beep(1);toast(played?'Toque de teste reproduzido. Confira também o volume de mídia do celular.':'Não foi possível tocar. Confira o volume e tente ativar os alertas.','info');return;}
+  if('Notification' in window&&Notification.permission==='default'){try{await Notification.requestPermission();}catch(e){}}
+  const shown=await systemNotification('Teste do toque da Jornada','Este aviso usa o som configurado nas notificações do celular.','test');
+  toast(shown?'Notificação de teste enviada. O som depende das configurações do celular.':'Permita as notificações para testar o som do celular.',shown?'info':'warn');
 };
 $('btnCopy').onclick=async()=>{
   if(!last||!last.text){toast('Preencha os horários para copiar.','warn');return}
