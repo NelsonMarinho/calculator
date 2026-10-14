@@ -7,7 +7,7 @@ O projeto está preparado para hospedagem estática. `vercel.json` define o buil
 No terminal do notebook, dentro da pasta do projeto:
 
 ```bash
-git add .gitignore .github/workflows/ci.yml package.json vercel.json scripts/build.cjs scripts/check.cjs scripts/primeiro-envio.sh tests/build.test.cjs README.md LEIA-ME.md DEPLOY_VERCEL.md
+git add -A
 git commit -m "build: preparar deploy estático na Vercel"
 git push origin main
 ```

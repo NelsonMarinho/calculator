@@ -15,8 +15,8 @@ test('folga compensada debita jornada e atestado mantém saldo',()=>{assert.equa
 test('feriado não tem jornada contratada',()=>{const r=calc({tipo:'fer',modo:'continua',ent:'08:00',fin:'12:00'});assert.equal(r.J,0);assert.equal(r.saldo,240);});
 test('jornada excessivamente longa retorna erro',()=>{assert.ok(calc({modo:'continua',ent:'08:00',fin:'05:00'}).err);});
 test('estimativa salarial mantém valores numéricos',()=>{const r=calc({ent:'08:00',sal:'12:00',vol:'13:00',fin:'17:00'},{sal:2200});assert.equal(r.vE,10);assert.equal(r.vN,0);});
-test('refatoração preserva os resultados do HTML original',()=>{
- const original=fs.readFileSync('calculador-jornada-v7.4.html','utf8');
+test('refatoração preserva os resultados do HTML v7.3',()=>{
+ const original=fs.readFileSync('calculador-jornada-v7.3.html','utf8');
  const js=original.match(/<script>([\s\S]*?)<\/script>/)[1];
  const legacy=vm.createContext({});
  vm.runInContext(js.slice(js.indexOf('const pad='),js.indexOf('function load()'))+js.slice(js.indexOf('const nm='),js.indexOf('/* ===== Intervalo entre jornadas')),legacy);

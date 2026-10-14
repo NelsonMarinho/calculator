@@ -48,7 +48,7 @@ Os 28 testes verificam cálculos, comparação com o HTML original, backups, ser
 
 O workflow [Verificar aplicativo](.github/workflows/ci.yml) executa o build completo em pushes e pull requests, usando as ações oficiais [checkout](https://github.com/actions/checkout) e [setup-node](https://github.com/actions/setup-node).
 
-O `.gitignore` exclui configurações locais, credenciais, backups pessoais, dependências, logs, `dist` e pacotes gerados. O HTML original continua versionado como referência dos cálculos. O script `scripts/primeiro-envio.sh` fica disponível para iniciar um remoto vazio; depois do primeiro envio, use o fluxo normal de commits e pushes.
+O `.gitignore` exclui configurações locais, credenciais, backups pessoais, dependências, logs, `dist` e pacotes gerados. O HTML de referência é `calculador-jornada-v7.3.html`. Ele continua versionado para comparar os cálculos; o app publicado é gerado a partir de `index.html` e `assets/`. O script `scripts/primeiro-envio.sh` fica disponível para iniciar um remoto vazio; depois do primeiro envio, use o fluxo normal de commits e pushes.
 
 ## Publicação manual em outra hospedagem
 

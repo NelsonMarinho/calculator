@@ -1,6 +1,6 @@
 # Minha Jornada
 
-O app foi reestruturado como uma PWA: pode ser usado no navegador do notebook e instalado pela tela inicial no Android, em navegadores compatíveis. O HTML original `calculador-jornada-v7.4.html` foi preservado.
+O app foi reestruturado como uma PWA: pode ser usado no navegador do notebook e instalado pela tela inicial no Android, em navegadores compatíveis. O HTML de referência atual é `calculador-jornada-v7.3.html`. A v7.3 tem o mesmo JavaScript da v7.4; a versão instalável preserva os cálculos e as melhorias para celular. Trocar o HTML de referência não troca automaticamente os arquivos da PWA publicados.
 
 ## Abrir no notebook
 
